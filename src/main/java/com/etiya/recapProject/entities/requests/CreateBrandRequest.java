@@ -1,8 +1,7 @@
 package com.etiya.recapProject.entities.requests;
 
 import javax.validation.constraints.NotBlank;
-
-import com.sun.istack.NotNull;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

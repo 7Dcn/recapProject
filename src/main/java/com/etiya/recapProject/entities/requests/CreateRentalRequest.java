@@ -3,8 +3,7 @@ package com.etiya.recapProject.entities.requests;
 import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
-
-import com.sun.istack.NotNull;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,12 +22,8 @@ public class CreateRentalRequest {
 	
 	private Date returnDate;
 	
-	@NotNull
-	@NotBlank
 	private int carId;
 	
-	@NotNull
-	@NotBlank
 	private int customerId;
 	
 	private boolean rentStatus;
