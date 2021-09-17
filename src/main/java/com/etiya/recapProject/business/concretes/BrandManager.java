@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.etiya.recapProject.business.abstracts.BrandService;
+import com.etiya.recapProject.business.constants.Messages;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
 import com.etiya.recapProject.core.utilities.results.SuccessDataResult;
 import com.etiya.recapProject.core.utilities.results.SuccessResult;
 import com.etiya.recapProject.dataAccess.abstracts.BrandDao;
 import com.etiya.recapProject.entities.concretes.Brand;
+import com.etiya.recapProject.entities.requests.CreateBrandRequest;
+import com.etiya.recapProject.entities.requests.DeleteBrandRequest;
 
 @Service
 public class BrandManager implements BrandService {
@@ -25,28 +28,37 @@ public class BrandManager implements BrandService {
 	}
 
 	@Override
-	public Result add(Brand brand) {
+	public Result add(CreateBrandRequest createBrandRequest) {
+				
+		Brand brand = new Brand();
+		brand.setBrandName(createBrandRequest.getBrandName());
+		
 		this.brandDao.save(brand);
-		return new SuccessResult(brand.getBrandName() + " Marka eklendi.");
+		return new SuccessResult(Messages.BRANDADD);
 
 	}
 
 	@Override
-	public Result update(Brand brand) {
+	public Result update(CreateBrandRequest createBrandRequest) {
+		Brand brand = new Brand();
+		brand.setBrandName(createBrandRequest.getBrandName());
+		
 		this.brandDao.save(brand);
-		return new SuccessResult(brand.getBrandName() + " Marka güncellendi.");
-
+		return new SuccessResult(Messages.BRANDUPDATE);
 	}
 
 	@Override
-	public Result delete(Brand brand) {
-		this.brandDao.delete(brand);
-		return new SuccessResult(brand.getBrandName() + " Marka silindi.");
+	public Result delete(DeleteBrandRequest deleteBrandRequest) {
+		Brand brand = new Brand();
+		brand.setId(this.brandDao.getByBrandName(deleteBrandRequest.getBrandName()).getId());
+		
+		this.brandDao.deleteById(brand.getId());
+		return new SuccessResult(Messages.BRANDDELETE);
 	}
 
 	@Override
 	public DataResult<List<Brand>> getAll() {
-		return new SuccessDataResult<List<Brand>>(this.brandDao.findAll(), " Markalar listelendi. ");
+		return new SuccessDataResult<List<Brand>>(this.brandDao.findAll(), Messages.BRANDLIST);
 	}
 
 	@Override

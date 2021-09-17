@@ -5,15 +5,14 @@ import java.util.List;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
 import com.etiya.recapProject.entities.concretes.Brand;
+import com.etiya.recapProject.entities.requests.CreateBrandRequest;
+import com.etiya.recapProject.entities.requests.DeleteBrandRequest;
 
 public interface BrandService {
-	Result add(Brand brand);
-
-	Result update(Brand brand);
-
-	Result delete(Brand brand);
-
-	DataResult<List<Brand>> getAll();
-	
+	Result add(CreateBrandRequest createBrandRequest);
+	Result update(CreateBrandRequest createBrandRequest);
+	Result delete(DeleteBrandRequest deleteBrandRequest);
+	DataResult<List<Brand>> getAll();	
 	DataResult<Brand> findById(int id);
+//	DataResult<Brand> getByBrandName(String brandName);
 }

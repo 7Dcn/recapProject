@@ -6,15 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 import com.etiya.recapProject.business.abstracts.ColorService;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
 import com.etiya.recapProject.entities.concretes.Color;
+import com.etiya.recapProject.entities.requests.CreateColorRequest;
+import com.etiya.recapProject.entities.requests.DeleteColorRequest;
+
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("api/colors")
@@ -28,18 +30,18 @@ public class ColorsController {
 	}
 	
 	@PostMapping("/add")
-	public Result add(@RequestBody Color color) {
-		return this.colorService.add(color);
+	public Result add(@RequestBody CreateColorRequest createColorRequest) {
+		return this.colorService.add(createColorRequest);
 	}
 	
 	@PostMapping("/update")
-	public Result update(@RequestBody Color color) {
-		return this.colorService.add(color);
+	public Result update(@RequestBody CreateColorRequest createColorRequest) {
+		return this.colorService.update(createColorRequest);
 	}
 	
 	@PutMapping("/delete")
-	public Result delete(@RequestBody Color color) {
-		return this.colorService.delete(color);
+	public Result delete(@RequestBody DeleteColorRequest deleteColorRequest) {
+		return this.colorService.delete(deleteColorRequest);
 	}
 	
 	@GetMapping("/getall")

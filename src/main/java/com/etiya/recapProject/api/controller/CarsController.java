@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +14,10 @@ import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
 import com.etiya.recapProject.entities.concretes.Car;
 import com.etiya.recapProject.entities.dtos.CarDetailDto;
+import com.etiya.recapProject.entities.requests.CreateCarRequest;
+import com.etiya.recapProject.entities.requests.DeleteCarRequest;
+
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("api/cars")
@@ -28,18 +31,18 @@ public class CarsController {
 	}
 	
 	@PostMapping("/add")
-	public Result add(@RequestBody Car car) {
-		return this.carService.add(car);
+	public Result add(@RequestBody CreateCarRequest createCarRequest) {
+		return this.carService.add(createCarRequest);
 	}
 	
 	@PostMapping("/update")
 	public Result update(@RequestBody Car car) {
-		return this.carService.add(car);
+		return this.carService.update(car);
 	}
 	
 	@PutMapping("/delete")
-	public Result delete(@RequestBody Car car) {
-		return this.carService.delete(car);
+	public Result delete(@RequestBody DeleteCarRequest deleteCarRequest) {
+		return this.carService.delete(deleteCarRequest);
 	}
 	
 	@GetMapping("/getall")
@@ -53,8 +56,8 @@ public class CarsController {
 	}
 	
 	@GetMapping("/getcardetails")
-	public DataResult<List<CarDetailDto>> getCarDetails() {
-		return this.carService.getCartWithBrandAndColorDetails();
+	public DataResult<List<CarDetailDto>> getCarsDetails() {
+		return this.carService.getCarsWithBrandAndColorDetails();
 	}
 	
 }

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,6 +13,10 @@ import com.etiya.recapProject.business.abstracts.BrandService;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
 import com.etiya.recapProject.entities.concretes.Brand;
+import com.etiya.recapProject.entities.requests.CreateBrandRequest;
+import com.etiya.recapProject.entities.requests.DeleteBrandRequest;
+
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("api/brands")
@@ -28,18 +31,18 @@ public class BrandsController {
 	}
 
 	@PostMapping("/add")
-	public Result add(@RequestBody Brand brand) {
-		return this.brandService.add(brand);
+	public Result add(@RequestBody CreateBrandRequest createBrandRequest) {
+		return this.brandService.add(createBrandRequest);
 	}
 	
 	@PostMapping("/update")
-	public Result  update(@RequestBody Brand brand) {
-		return this.brandService.add(brand);
+	public Result  update(@RequestBody CreateBrandRequest createBrandRequest) {
+		return this.brandService.update(createBrandRequest);
 	}
 	
 	@PutMapping("/delete")
-	public Result delete(@RequestBody Brand brand) {
-		return this.brandService.delete(brand);
+	public Result delete(@RequestBody DeleteBrandRequest deleteBrandRequest) {
+		return this.brandService.delete(deleteBrandRequest);
 	}
 	
 	@GetMapping("/getall")
