@@ -10,7 +10,7 @@ import com.etiya.recapProject.business.constants.Messages;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.SuccessDataResult;
 import com.etiya.recapProject.dataAccess.abstracts.UserDao;
-import com.etiya.recapProject.entities.concretes.User;
+import com.etiya.recapProject.entities.concretes.ApplicationUser;
 
 @Service
 public class UserManager implements UserService {
@@ -24,8 +24,8 @@ public class UserManager implements UserService {
 	}
 
 	@Override
-	public DataResult<List<User>> getAll() {
-		return new SuccessDataResult<List<User>>(this.userDao.findAll(),Messages.USERLIST);
+	public DataResult<List<ApplicationUser>> getAll() {
+		return new SuccessDataResult<List<ApplicationUser>>(this.userDao.findAll(),Messages.USERLIST);
 	}
 
 }

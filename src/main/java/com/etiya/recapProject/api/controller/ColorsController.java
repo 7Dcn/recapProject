@@ -2,6 +2,8 @@ package com.etiya.recapProject.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,12 +32,12 @@ public class ColorsController {
 	}
 	
 	@PostMapping("/add")
-	public Result add(@RequestBody CreateColorRequest createColorRequest) {
+	public Result add(@Valid @RequestBody CreateColorRequest createColorRequest) {
 		return this.colorService.add(createColorRequest);
 	}
 	
 	@PostMapping("/update")
-	public Result update(@RequestBody CreateColorRequest createColorRequest) {
+	public Result update(@Valid @RequestBody CreateColorRequest createColorRequest) {
 		return this.colorService.update(createColorRequest);
 	}
 	

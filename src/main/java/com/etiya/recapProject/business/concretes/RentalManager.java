@@ -43,6 +43,7 @@ public class RentalManager implements RentalService {
 		rental.setReturnDate(createRentalRequest.getReturnDate());
 		rental.setCar(car);
 		rental.setCustomer(customer);
+		rental.setReturnStatus(createRentalRequest.isRentStatus());
 
 		var result = BusinessRules.run(checkCarIsReturned());
 

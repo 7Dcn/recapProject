@@ -2,6 +2,8 @@ package com.etiya.recapProject.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +30,7 @@ public class RentalsController {
 	}
 	
 	@PostMapping("/add")
-	public Result add(@RequestBody CreateRentalRequest createRentalRequest) {
+	public Result add(@Valid @RequestBody CreateRentalRequest createRentalRequest) {
 		return this.rentalService.add(createRentalRequest);
 	}
 	

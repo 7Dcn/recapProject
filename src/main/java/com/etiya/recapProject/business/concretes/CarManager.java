@@ -52,7 +52,21 @@ public class CarManager implements CarService {
 	}
 
 	@Override
-	public Result update(Car car) {
+	public Result update(CreateCarRequest createCarRequest) {
+		Brand brand = new Brand();
+		brand.setId(createCarRequest.getBrandId());
+		
+		Color color = new Color();
+		color.setId(createCarRequest.getColorId());
+		
+		Car car = new Car();
+		car.setCarName(createCarRequest.getCarName());
+		car.setDailyPrice(createCarRequest.getDailyPrice());
+		car.setDescription(createCarRequest.getDescription());
+		car.setModelYear(createCarRequest.getModelYear());
+		car.setBrand(brand);
+		car.setColor(color);
+		
 		this.carDao.save(car);
 		return new SuccessResult(Messages.CARUPDATE);
 	}

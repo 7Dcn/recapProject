@@ -10,7 +10,7 @@ import com.etiya.recapProject.entities.requests.DeleteCustomerRequest;
 
 public interface CustomerService {
 	Result add(CreateCustomerRequest createCustomerRequest);
-	Result update(Customer customer);
+	Result update(CreateCustomerRequest createCustomerRequest);
 	Result delete(DeleteCustomerRequest deleteCustomerRequest);
 	DataResult<List<Customer>> getAll();	
 }

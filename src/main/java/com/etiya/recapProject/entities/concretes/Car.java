@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name="cars")
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","rental"})
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","rentals"})
 public class Car {
 	
 	@Id
@@ -52,7 +52,7 @@ public class Car {
 	@JoinColumn(name="color_id")
 	private Color color;
 	
-	@OneToMany(mappedBy = "car")
 	@JsonIgnore
+	@OneToMany(mappedBy = "car")
 	private List<Rental> rentals;
 }

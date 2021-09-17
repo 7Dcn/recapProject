@@ -40,7 +40,12 @@ public class CustomerManager implements CustomerService {
 	}
 
 	@Override
-	public Result update(Customer customer) {
+	public Result update(CreateCustomerRequest createCustomerRequest) {
+		Customer customer = new Customer();
+		customer.setCompanyName(createCustomerRequest.getCompanyName());
+		customer.setEmail(createCustomerRequest.getEmail());
+		customer.setPassword(createCustomerRequest.getPassword());
+		
 		this.customerDao.save(customer);
 		return new SuccessResult(Messages.CUSTOMERUPDATE);
 	}

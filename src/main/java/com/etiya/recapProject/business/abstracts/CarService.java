@@ -11,7 +11,7 @@ import com.etiya.recapProject.entities.requests.DeleteCarRequest;
 
 public interface CarService {
 	Result add(CreateCarRequest createCarRequest);
-	Result update(Car car);
+	Result update(CreateCarRequest createCarRequest);
 	Result delete(DeleteCarRequest deleteCarRequest);
 	DataResult<List<Car>> getAll();	
 	DataResult<Car> findById(int id);

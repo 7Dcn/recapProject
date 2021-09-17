@@ -2,6 +2,8 @@ package com.etiya.recapProject.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,13 +33,13 @@ public class CarsController {
 	}
 	
 	@PostMapping("/add")
-	public Result add(@RequestBody CreateCarRequest createCarRequest) {
+	public Result add(@Valid @RequestBody CreateCarRequest createCarRequest) {
 		return this.carService.add(createCarRequest);
 	}
 	
 	@PostMapping("/update")
-	public Result update(@RequestBody Car car) {
-		return this.carService.update(car);
+	public Result update(@Valid @RequestBody CreateCarRequest createCarRequest) {
+		return this.carService.update(createCarRequest);
 	}
 	
 	@PutMapping("/delete")

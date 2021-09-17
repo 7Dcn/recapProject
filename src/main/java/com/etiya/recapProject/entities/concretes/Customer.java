@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name="customers")
 @PrimaryKeyJoinColumn(name = "id")
-public class Customer extends User {
+public class Customer extends ApplicationUser {
 	
 	@Column(name="company_name")
 	private String companyName;
