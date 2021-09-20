@@ -40,5 +40,5 @@ public class Messages {
     public static final String CARIMAGEUPDATE = "Car image updated.";
     public static final String CARIMAGEDELETE = "Car image deleted.";
     public static final String CARIMAGELIST = "Car images listed.";
-    public static final String CARIMAGEERROR = "A car can not have more than 5 pictures.";
+    public static final String CARIMAGELIMITERROR = "A car can not have more than 5 pictures.";
 }

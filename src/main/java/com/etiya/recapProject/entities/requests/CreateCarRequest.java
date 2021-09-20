@@ -24,6 +24,8 @@ public class CreateCarRequest {
 
 	@Size(max = 200)
 	private String description;
+	
+	private String imagePath;
 
 	private int brandId;
 

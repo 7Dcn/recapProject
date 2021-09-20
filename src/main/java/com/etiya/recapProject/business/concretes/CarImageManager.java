@@ -95,7 +95,7 @@ public class CarImageManager implements CarImageService {
 
 	private Result checkCountImagesOfCar(int carId, int limit) {
 		if (this.carImageDao.countCarImageByCar_Id(carId) >= limit) {
-			return new ErrorResult(Messages.CARIMAGEERROR);
+			return new ErrorResult(Messages.CARIMAGELIMITERROR);
 		}
 		return new SuccessResult();
 	}
@@ -104,7 +104,6 @@ public class CarImageManager implements CarImageService {
 
 		if (this.carImageDao.getByCar_Id(carId).get(0).getImagePath() == ImagePath.CARDEFAULTIMAGEPATH) {
 			this.carImageDao.deleteAll();
-			System.out.println("dene12");
 		}
 		return new SuccessResult();
 
