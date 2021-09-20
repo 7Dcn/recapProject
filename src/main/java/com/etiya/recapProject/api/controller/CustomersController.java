@@ -16,9 +16,9 @@ import com.etiya.recapProject.business.abstracts.CustomerService;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
 import com.etiya.recapProject.entities.concretes.Customer;
-import com.etiya.recapProject.entities.requests.CreateCustomerRequest;
-import com.etiya.recapProject.entities.requests.DeleteCustomerRequest;
-import com.etiya.recapProject.entities.requests.UpdateCustomerRequest;
+import com.etiya.recapProject.entities.requests.CustomerRequest.CreateCustomerRequest;
+import com.etiya.recapProject.entities.requests.CustomerRequest.DeleteCustomerRequest;
+import com.etiya.recapProject.entities.requests.CustomerRequest.UpdateCustomerRequest;
 
 @RestController
 @RequestMapping("api/customers")

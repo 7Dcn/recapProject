@@ -16,9 +16,9 @@ import com.etiya.recapProject.business.abstracts.BrandService;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
 import com.etiya.recapProject.entities.concretes.Brand;
-import com.etiya.recapProject.entities.requests.CreateBrandRequest;
-import com.etiya.recapProject.entities.requests.DeleteBrandRequest;
-import com.etiya.recapProject.entities.requests.UpdateBrandRequest;
+import com.etiya.recapProject.entities.requests.BrandRequest.CreateBrandRequest;
+import com.etiya.recapProject.entities.requests.BrandRequest.DeleteBrandRequest;
+import com.etiya.recapProject.entities.requests.BrandRequest.UpdateBrandRequest;
 
 
 @RestController

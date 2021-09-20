@@ -13,9 +13,9 @@ import com.etiya.recapProject.core.utilities.results.SuccessDataResult;
 import com.etiya.recapProject.core.utilities.results.SuccessResult;
 import com.etiya.recapProject.dataAccess.abstracts.CustomerDao;
 import com.etiya.recapProject.entities.concretes.Customer;
-import com.etiya.recapProject.entities.requests.CreateCustomerRequest;
-import com.etiya.recapProject.entities.requests.DeleteCustomerRequest;
-import com.etiya.recapProject.entities.requests.UpdateCustomerRequest;
+import com.etiya.recapProject.entities.requests.CustomerRequest.CreateCustomerRequest;
+import com.etiya.recapProject.entities.requests.CustomerRequest.DeleteCustomerRequest;
+import com.etiya.recapProject.entities.requests.CustomerRequest.UpdateCustomerRequest;
 
 @Service
 public class CustomerManager implements CustomerService {

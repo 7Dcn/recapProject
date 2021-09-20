@@ -10,4 +10,6 @@ public interface CarImageDao extends JpaRepository<CarImage, Integer> {
 	int countCarImageByCar_Id(int carId);
 
 	List<CarImage> getByCar_Id(int carId);
+	
+	CarImage getImagePathByCar_Id(int carId);
 }

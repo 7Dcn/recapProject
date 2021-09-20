@@ -16,9 +16,9 @@ import com.etiya.recapProject.entities.concretes.Brand;
 import com.etiya.recapProject.entities.concretes.Car;
 import com.etiya.recapProject.entities.concretes.Color;
 import com.etiya.recapProject.entities.dtos.CarDetailDto;
-import com.etiya.recapProject.entities.requests.CreateCarRequest;
-import com.etiya.recapProject.entities.requests.DeleteCarRequest;
-import com.etiya.recapProject.entities.requests.UpdateCarRequest;
+import com.etiya.recapProject.entities.requests.CarRequest.CreateCarRequest;
+import com.etiya.recapProject.entities.requests.CarRequest.DeleteCarRequest;
+import com.etiya.recapProject.entities.requests.CarRequest.UpdateCarRequest;
 
 @Service
 public class CarManager implements CarService {
@@ -97,5 +97,21 @@ public class CarManager implements CarService {
 		List<CarDetailDto> cars = this.carDao.getCarsWithBrandAndColorDetails();
 		return new SuccessDataResult<List<CarDetailDto>>(cars, Messages.CARLIST);
 	}
+	
+	@Override
+	public DataResult<List<CarDetailDto>> getCarsByBrandName(String brandName) {
+		List<CarDetailDto> cars = this.carDao.getCarsByBrandName(brandName);
+		return new SuccessDataResult<List<CarDetailDto>>(cars, Messages.CARLIST);
+	}
 
+	@Override
+	public DataResult<List<CarDetailDto>> getCarsByColorName(String colorName) {
+		List<CarDetailDto> cars = this.carDao.getCarsByColorName(colorName);
+		return new SuccessDataResult<List<CarDetailDto>>(cars, Messages.CARLIST);
+	}
+
+	@Override
+	public DataResult<Car> getByCarName(String carName) {
+		return new SuccessDataResult<Car>(this.carDao.getByCarName(carName));
+	}
 }

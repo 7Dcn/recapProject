@@ -17,8 +17,8 @@ import com.etiya.recapProject.dataAccess.abstracts.RentalDao;
 import com.etiya.recapProject.entities.concretes.Car;
 import com.etiya.recapProject.entities.concretes.Customer;
 import com.etiya.recapProject.entities.concretes.Rental;
-import com.etiya.recapProject.entities.requests.CreateRentalRequest;
-import com.etiya.recapProject.entities.requests.UpdateRentalRequest;
+import com.etiya.recapProject.entities.requests.RentalRequest.CreateRentalRequest;
+import com.etiya.recapProject.entities.requests.RentalRequest.UpdateRentalRequest;
 
 @Service
 public class RentalManager implements RentalService {

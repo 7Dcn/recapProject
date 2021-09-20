@@ -5,8 +5,8 @@ import java.util.List;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
 import com.etiya.recapProject.entities.concretes.Rental;
-import com.etiya.recapProject.entities.requests.CreateRentalRequest;
-import com.etiya.recapProject.entities.requests.UpdateRentalRequest;
+import com.etiya.recapProject.entities.requests.RentalRequest.CreateRentalRequest;
+import com.etiya.recapProject.entities.requests.RentalRequest.UpdateRentalRequest;
 
 public interface RentalService {
 	Result add(CreateRentalRequest createRentalRequest);

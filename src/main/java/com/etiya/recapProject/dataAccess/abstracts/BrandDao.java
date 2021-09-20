@@ -6,4 +6,5 @@ import com.etiya.recapProject.entities.concretes.Brand;
 
 public interface BrandDao extends JpaRepository<Brand, Integer> {
 	Brand getByBrandName(String brandName);
+	
 }

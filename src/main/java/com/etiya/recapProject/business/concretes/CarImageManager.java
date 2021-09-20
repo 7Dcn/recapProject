@@ -1,15 +1,18 @@
 package com.etiya.recapProject.business.concretes;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.etiya.recapProject.business.abstracts.CarImageService;
 import com.etiya.recapProject.business.constants.Messages;
 import com.etiya.recapProject.core.business.BusinessRules;
-import com.etiya.recapProject.core.business.ImagePath;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.ErrorResult;
 import com.etiya.recapProject.core.utilities.results.Result;
@@ -18,9 +21,9 @@ import com.etiya.recapProject.core.utilities.results.SuccessResult;
 import com.etiya.recapProject.dataAccess.abstracts.CarImageDao;
 import com.etiya.recapProject.entities.concretes.Car;
 import com.etiya.recapProject.entities.concretes.CarImage;
-import com.etiya.recapProject.entities.requests.CreateCarImageRequest;
-import com.etiya.recapProject.entities.requests.DeleteCarImageRequest;
-import com.etiya.recapProject.entities.requests.UpdateCarImageRequest;
+import com.etiya.recapProject.entities.requests.CarImageRequest.CreateCarImageRequest;
+import com.etiya.recapProject.entities.requests.CarImageRequest.DeleteCarImageRequest;
+import com.etiya.recapProject.entities.requests.CarImageRequest.UpdateCarImageRequest;
 
 @Service
 public class CarImageManager implements CarImageService {
@@ -34,22 +37,28 @@ public class CarImageManager implements CarImageService {
 	}
 
 	@Override
-	public Result add(CreateCarImageRequest createCarImageRequest) {
-		var result = BusinessRules.run(checkCountImagesOfCar(createCarImageRequest.getCarId(), 5),
-				checkDefaultImage(createCarImageRequest.getCarId()));
+	public Result add(CreateCarImageRequest createCarImageRequest, MultipartFile file) throws IOException {
+		var result = BusinessRules.run(checkImagesNumberLimit(createCarImageRequest.getCarId(), 5));
 		if (result != null) {
 			return result;
 		}
 
 		Car car = new Car();
 		car.setId(createCarImageRequest.getCarId());
+		String imagePathGuid = java.util.UUID.randomUUID().toString();
+
+		File imageFile = new File("C:\\Etiya\\carimages\\" + imagePathGuid);
+
+		imageFile.createNewFile();
+		FileOutputStream outputImage = new FileOutputStream(imageFile);
+		outputImage.write(file.getBytes());
+		outputImage.close();
 
 		CarImage carImage = new CarImage();
-		carImage.setCar(car);
-
-		String imageGUID = java.util.UUID.randomUUID().toString();
 		carImage.setDate(LocalDate.now());
-		carImage.setImagePath("images\\carImages\\" + imageGUID + ".jpeg");
+		carImage.setImagePath(imageFile.toString());
+		carImage.setImageName(createCarImageRequest.getImageName());
+		carImage.setCar(car);
 
 		this.carImageDao.save(carImage);
 
@@ -57,9 +66,20 @@ public class CarImageManager implements CarImageService {
 	}
 
 	@Override
-	public Result update(UpdateCarImageRequest updateCarImageRequest) {
+	public Result update(UpdateCarImageRequest updateCarImageRequest, MultipartFile file)throws IOException {
+		var result = BusinessRules.run(checkImagesNumberLimit(updateCarImageRequest.getCarId(), 5));
+		if (result != null) {
+			return result;
+		}
 		
-		String imageGUID = java.util.UUID.randomUUID().toString();
+		String imagePathGuid = java.util.UUID.randomUUID().toString();
+
+		File imageFile = new File("C:\\Etiya\\carimages\\" + imagePathGuid);
+
+		imageFile.createNewFile();
+		FileOutputStream outputImage = new FileOutputStream(imageFile);
+		outputImage.write(file.getBytes());
+		outputImage.close();
 		
 		Car car = new Car();
 		car.setId(updateCarImageRequest.getCarId());
@@ -67,10 +87,12 @@ public class CarImageManager implements CarImageService {
 		CarImage carImage = new CarImage();
 		carImage.setId(updateCarImageRequest.getCarId());
 		carImage.setDate(LocalDate.now());
-		carImage.setImagePath("images\\carImages\\" + imageGUID + ".jpeg");
+		carImage.setImagePath(imageFile.toString());
+		carImage.setImageName(updateCarImageRequest.getImageName());
 		carImage.setCar(car);
 
 		this.carImageDao.save(carImage);
+		
 		return new SuccessResult(Messages.CARIMAGEUPDATE);
 	}
 
@@ -90,22 +112,26 @@ public class CarImageManager implements CarImageService {
 
 	@Override
 	public DataResult<List<CarImage>> getImagesWithCarId(int id) {
+		if(!checkImageIsEmpty(id).isSuccess()) {
+			File defaultImagePath = new File("C:\\Etiya\\carimages\\default\\default.jpg");
+			System.out.println(defaultImagePath);
+			return new SuccessDataResult<List<CarImage>>(Messages.CARIMAGEDEFAULT);
+		}
 		return new SuccessDataResult<List<CarImage>>(this.carImageDao.getByCar_Id(id), Messages.CARIMAGELIST);
 	}
 
-	private Result checkCountImagesOfCar(int carId, int limit) {
+	private Result checkImagesNumberLimit(int carId, int limit) {
 		if (this.carImageDao.countCarImageByCar_Id(carId) >= limit) {
 			return new ErrorResult(Messages.CARIMAGELIMITERROR);
 		}
 		return new SuccessResult();
 	}
 
-	private Result checkDefaultImage(int carId) {
-
-		if (this.carImageDao.getByCar_Id(carId).get(0).getImagePath() == ImagePath.CARDEFAULTIMAGEPATH) {
-			this.carImageDao.deleteAll();
+	private Result checkImageIsEmpty(int carId) {
+		if (this.carImageDao.getImagePathByCar_Id(carId)==null) {
+			return new ErrorResult();
 		}
 		return new SuccessResult();
-
 	}
+
 }

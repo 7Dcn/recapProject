@@ -15,8 +15,8 @@ import com.etiya.recapProject.business.abstracts.RentalService;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
 import com.etiya.recapProject.entities.concretes.Rental;
-import com.etiya.recapProject.entities.requests.CreateRentalRequest;
-import com.etiya.recapProject.entities.requests.UpdateRentalRequest;
+import com.etiya.recapProject.entities.requests.RentalRequest.CreateRentalRequest;
+import com.etiya.recapProject.entities.requests.RentalRequest.UpdateRentalRequest;
 
 @RestController
 @RequestMapping("api/rentals")
