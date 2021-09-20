@@ -15,6 +15,7 @@ import com.etiya.recapProject.dataAccess.abstracts.CustomerDao;
 import com.etiya.recapProject.entities.concretes.Customer;
 import com.etiya.recapProject.entities.requests.CreateCustomerRequest;
 import com.etiya.recapProject.entities.requests.DeleteCustomerRequest;
+import com.etiya.recapProject.entities.requests.UpdateCustomerRequest;
 
 @Service
 public class CustomerManager implements CustomerService {
@@ -40,11 +41,12 @@ public class CustomerManager implements CustomerService {
 	}
 
 	@Override
-	public Result update(CreateCustomerRequest createCustomerRequest) {
+	public Result update(UpdateCustomerRequest updateCustomerRequest) {
 		Customer customer = new Customer();
-		customer.setCompanyName(createCustomerRequest.getCompanyName());
-		customer.setEmail(createCustomerRequest.getEmail());
-		customer.setPassword(createCustomerRequest.getPassword());
+		customer.setId(updateCustomerRequest.getId());
+		customer.setCompanyName(updateCustomerRequest.getCompanyName());
+		customer.setEmail(updateCustomerRequest.getEmail());
+		customer.setPassword(updateCustomerRequest.getPassword());
 		
 		this.customerDao.save(customer);
 		return new SuccessResult(Messages.CUSTOMERUPDATE);

@@ -19,6 +19,7 @@ import com.etiya.recapProject.entities.concretes.Car;
 import com.etiya.recapProject.entities.dtos.CarDetailDto;
 import com.etiya.recapProject.entities.requests.CreateCarRequest;
 import com.etiya.recapProject.entities.requests.DeleteCarRequest;
+import com.etiya.recapProject.entities.requests.UpdateCarRequest;
 
 
 @RestController
@@ -38,8 +39,8 @@ public class CarsController {
 	}
 	
 	@PostMapping("/update")
-	public Result update(@Valid @RequestBody CreateCarRequest createCarRequest) {
-		return this.carService.update(createCarRequest);
+	public Result update(@Valid @RequestBody UpdateCarRequest updateCarRequest) {
+		return this.carService.update(updateCarRequest);
 	}
 	
 	@PutMapping("/delete")

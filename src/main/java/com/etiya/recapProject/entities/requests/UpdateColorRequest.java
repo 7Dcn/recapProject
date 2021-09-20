@@ -1,7 +1,5 @@
 package com.etiya.recapProject.entities.requests;
 
-import java.util.Date;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -14,14 +12,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateRentalRequest {
-	
+public class UpdateColorRequest {
+
+	private int id;
+
 	@NotNull
 	@NotBlank
-	private Date rentDate;
-	
-	private int carId;
-	
-	private int customerId;
-	
+	private String colorName;
 }

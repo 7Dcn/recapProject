@@ -16,6 +16,7 @@ import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
 import com.etiya.recapProject.entities.concretes.Rental;
 import com.etiya.recapProject.entities.requests.CreateRentalRequest;
+import com.etiya.recapProject.entities.requests.UpdateRentalRequest;
 
 @RestController
 @RequestMapping("api/rentals")
@@ -32,6 +33,11 @@ public class RentalsController {
 	@PostMapping("/add")
 	public Result add(@Valid @RequestBody CreateRentalRequest createRentalRequest) {
 		return this.rentalService.add(createRentalRequest);
+	}
+	
+	@PostMapping("/update")
+	public Result update(@Valid @RequestBody UpdateRentalRequest updateRentalRequest) {
+		return this.rentalService.update(updateRentalRequest);
 	}
 	
 	@GetMapping("/getall")

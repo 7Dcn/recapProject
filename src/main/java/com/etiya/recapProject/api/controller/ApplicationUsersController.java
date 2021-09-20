@@ -7,18 +7,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.etiya.recapProject.business.abstracts.UserService;
+import com.etiya.recapProject.business.abstracts.ApplicationUserService;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.entities.concretes.ApplicationUser;
 
 @RestController
 @RequestMapping("api/users")
-public class UsersController {
+public class ApplicationUsersController {
 	
 	@Autowired
-	private UserService userService;
+	private ApplicationUserService userService;
 	
-	public UsersController(UserService userService) {
+	public ApplicationUsersController(ApplicationUserService userService) {
 		super();
 		this.userService = userService;
 	}

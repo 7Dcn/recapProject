@@ -35,4 +35,10 @@ public class Messages {
     public static final String RENTALLIST = "Rentals listed.";
     public static final String RENTALDATEERROR = "Vehicle can not rented.";
     public static final String RENTALDATESUCCESS = "Vehicle can be rented.";
+    
+    public static final String CARIMAGEADD = "Car image added.";
+    public static final String CARIMAGEUPDATE = "Car image updated.";
+    public static final String CARIMAGEDELETE = "Car image deleted.";
+    public static final String CARIMAGELIST = "Car images listed.";
+    public static final String CARIMAGEERROR = "A car can not have more than 5 pictures.";
 }

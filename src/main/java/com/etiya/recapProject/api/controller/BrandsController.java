@@ -18,6 +18,7 @@ import com.etiya.recapProject.core.utilities.results.Result;
 import com.etiya.recapProject.entities.concretes.Brand;
 import com.etiya.recapProject.entities.requests.CreateBrandRequest;
 import com.etiya.recapProject.entities.requests.DeleteBrandRequest;
+import com.etiya.recapProject.entities.requests.UpdateBrandRequest;
 
 
 @RestController
@@ -38,8 +39,8 @@ public class BrandsController {
 	}
 	
 	@PostMapping("/update")
-	public Result  update(@Valid @RequestBody CreateBrandRequest createBrandRequest) {
-		return this.brandService.update(createBrandRequest);
+	public Result  update(@Valid @RequestBody UpdateBrandRequest updateBrandRequest) {
+		return this.brandService.update(updateBrandRequest);
 	}
 	
 	@PutMapping("/delete")

@@ -1,7 +1,5 @@
 package com.etiya.recapProject.entities.requests;
 
-import java.util.Date;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -10,18 +8,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateRentalRequest {
+public class UpdateCustomerRequest {
+	
+	private int id;
+	
+	@NotNull
+	private String companyName;
 	
 	@NotNull
 	@NotBlank
-	private Date rentDate;
+	private String email;
 	
-	private int carId;
-	
-	private int customerId;
-	
+	@NotNull
+	@NotBlank
+	private String password;
 }

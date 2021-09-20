@@ -15,6 +15,7 @@ import com.etiya.recapProject.dataAccess.abstracts.ColorDao;
 import com.etiya.recapProject.entities.concretes.Color;
 import com.etiya.recapProject.entities.requests.CreateColorRequest;
 import com.etiya.recapProject.entities.requests.DeleteColorRequest;
+import com.etiya.recapProject.entities.requests.UpdateColorRequest;
 
 @Service
 public class ColorManager implements ColorService {
@@ -37,9 +38,10 @@ public class ColorManager implements ColorService {
 	}
 
 	@Override
-	public Result update(CreateColorRequest CreateColorRequest) {
+	public Result update(UpdateColorRequest updateColorRequest) {
 		Color color = new Color();
-		color.setColorName(CreateColorRequest.getColorName());
+		color.setId(updateColorRequest.getId());
+		color.setColorName(updateColorRequest.getColorName());
 		
 		this.colorDao.save(color);
 		return new SuccessResult(Messages.COLORUPDATE);

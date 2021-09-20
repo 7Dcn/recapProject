@@ -18,6 +18,7 @@ import com.etiya.recapProject.entities.concretes.Car;
 import com.etiya.recapProject.entities.concretes.Customer;
 import com.etiya.recapProject.entities.concretes.Rental;
 import com.etiya.recapProject.entities.requests.CreateRentalRequest;
+import com.etiya.recapProject.entities.requests.UpdateRentalRequest;
 
 @Service
 public class RentalManager implements RentalService {
@@ -40,10 +41,28 @@ public class RentalManager implements RentalService {
 
 		Rental rental = new Rental();
 		rental.setRentDate(createRentalRequest.getRentDate());
-		rental.setReturnDate(createRentalRequest.getReturnDate());
 		rental.setCar(car);
 		rental.setCustomer(customer);
-		rental.setReturnStatus(createRentalRequest.isRentStatus());
+
+		this.rentalDao.save(rental);
+		return new SuccessResult(Messages.RENTALADD);
+
+	}
+	
+	@Override
+	public Result update(UpdateRentalRequest updateRentalRequest) {
+		Car car = new Car();
+		car.setId(updateRentalRequest.getCarId());
+
+		Customer customer = new Customer();
+		customer.setId(updateRentalRequest.getCustomerId());
+
+		Rental rental = new Rental();
+		rental.setRentDate(updateRentalRequest.getRentDate());
+		rental.setReturnDate(updateRentalRequest.getReturnDate());
+		rental.setCar(car);
+		rental.setCustomer(customer);
+		rental.setReturnStatus(updateRentalRequest.isRentStatus());
 
 		var result = BusinessRules.run(checkCarIsReturned());
 
@@ -53,7 +72,6 @@ public class RentalManager implements RentalService {
 
 		this.rentalDao.save(rental);
 		return new SuccessResult(Messages.RENTALADD);
-
 	}
 
 	@Override
@@ -67,5 +85,7 @@ public class RentalManager implements RentalService {
 		}
 		return new SuccessResult();
 	}
+
+
 
 }

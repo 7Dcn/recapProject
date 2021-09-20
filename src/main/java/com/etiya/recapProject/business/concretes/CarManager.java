@@ -18,6 +18,7 @@ import com.etiya.recapProject.entities.concretes.Color;
 import com.etiya.recapProject.entities.dtos.CarDetailDto;
 import com.etiya.recapProject.entities.requests.CreateCarRequest;
 import com.etiya.recapProject.entities.requests.DeleteCarRequest;
+import com.etiya.recapProject.entities.requests.UpdateCarRequest;
 
 @Service
 public class CarManager implements CarService {
@@ -52,18 +53,19 @@ public class CarManager implements CarService {
 	}
 
 	@Override
-	public Result update(CreateCarRequest createCarRequest) {
+	public Result update(UpdateCarRequest updateCarRequest) {
 		Brand brand = new Brand();
-		brand.setId(createCarRequest.getBrandId());
+		brand.setId(updateCarRequest.getBrandId());
 		
 		Color color = new Color();
-		color.setId(createCarRequest.getColorId());
+		color.setId(updateCarRequest.getColorId());
 		
 		Car car = new Car();
-		car.setCarName(createCarRequest.getCarName());
-		car.setDailyPrice(createCarRequest.getDailyPrice());
-		car.setDescription(createCarRequest.getDescription());
-		car.setModelYear(createCarRequest.getModelYear());
+		car.setId(updateCarRequest.getId());
+		car.setCarName(updateCarRequest.getCarName());
+		car.setDailyPrice(updateCarRequest.getDailyPrice());
+		car.setDescription(updateCarRequest.getDescription());
+		car.setModelYear(updateCarRequest.getModelYear());
 		car.setBrand(brand);
 		car.setColor(color);
 		

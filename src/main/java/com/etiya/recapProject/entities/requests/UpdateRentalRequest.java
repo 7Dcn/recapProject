@@ -14,14 +14,19 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateRentalRequest {
+public class UpdateRentalRequest {
+
+	private int id;
 	
 	@NotNull
 	@NotBlank
 	private Date rentDate;
 	
+	private Date returnDate;
+	
 	private int carId;
 	
 	private int customerId;
 	
+	private boolean rentStatus;
 }

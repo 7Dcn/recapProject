@@ -5,20 +5,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.etiya.recapProject.business.abstracts.UserService;
+import com.etiya.recapProject.business.abstracts.ApplicationUserService;
 import com.etiya.recapProject.business.constants.Messages;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.SuccessDataResult;
-import com.etiya.recapProject.dataAccess.abstracts.UserDao;
+import com.etiya.recapProject.dataAccess.abstracts.ApplicationUserDao;
 import com.etiya.recapProject.entities.concretes.ApplicationUser;
 
 @Service
-public class UserManager implements UserService {
+public class ApplicationUserManager implements ApplicationUserService {
 
 	@Autowired
-	private UserDao userDao;
+	private ApplicationUserDao userDao;
 	
-	public UserManager(UserDao userDao) {
+	public ApplicationUserManager(ApplicationUserDao userDao) {
 		super();
 		this.userDao = userDao;
 	}

@@ -15,6 +15,7 @@ import com.etiya.recapProject.dataAccess.abstracts.BrandDao;
 import com.etiya.recapProject.entities.concretes.Brand;
 import com.etiya.recapProject.entities.requests.CreateBrandRequest;
 import com.etiya.recapProject.entities.requests.DeleteBrandRequest;
+import com.etiya.recapProject.entities.requests.UpdateBrandRequest;
 
 @Service
 public class BrandManager implements BrandService {
@@ -29,20 +30,21 @@ public class BrandManager implements BrandService {
 
 	@Override
 	public Result add(CreateBrandRequest createBrandRequest) {
-				
+
 		Brand brand = new Brand();
 		brand.setBrandName(createBrandRequest.getBrandName());
-		
+
 		this.brandDao.save(brand);
 		return new SuccessResult(Messages.BRANDADD);
 
 	}
 
 	@Override
-	public Result update(CreateBrandRequest createBrandRequest) {
+	public Result update(UpdateBrandRequest updateBrandRequest) {
 		Brand brand = new Brand();
-		brand.setBrandName(createBrandRequest.getBrandName());
-		
+		brand.setId(updateBrandRequest.getId());
+		brand.setBrandName(updateBrandRequest.getBrandName());
+
 		this.brandDao.save(brand);
 		return new SuccessResult(Messages.BRANDUPDATE);
 	}
@@ -51,7 +53,7 @@ public class BrandManager implements BrandService {
 	public Result delete(DeleteBrandRequest deleteBrandRequest) {
 		Brand brand = new Brand();
 		brand.setId(this.brandDao.getByBrandName(deleteBrandRequest.getBrandName()).getId());
-		
+
 		this.brandDao.deleteById(brand.getId());
 		return new SuccessResult(Messages.BRANDDELETE);
 	}
