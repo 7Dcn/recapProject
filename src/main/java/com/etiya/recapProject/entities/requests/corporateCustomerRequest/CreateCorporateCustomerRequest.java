@@ -1,5 +1,6 @@
 package com.etiya.recapProject.entities.requests.corporateCustomerRequest;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -16,6 +17,7 @@ public class CreateCorporateCustomerRequest {
 	
 	@NotNull
 	@NotBlank
+	@Email
 	private String email;
 	
 	@NotNull
