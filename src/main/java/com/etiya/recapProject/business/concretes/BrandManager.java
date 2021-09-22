@@ -13,9 +13,9 @@ import com.etiya.recapProject.core.utilities.results.SuccessDataResult;
 import com.etiya.recapProject.core.utilities.results.SuccessResult;
 import com.etiya.recapProject.dataAccess.abstracts.BrandDao;
 import com.etiya.recapProject.entities.concretes.Brand;
-import com.etiya.recapProject.entities.requests.BrandRequest.CreateBrandRequest;
-import com.etiya.recapProject.entities.requests.BrandRequest.DeleteBrandRequest;
-import com.etiya.recapProject.entities.requests.BrandRequest.UpdateBrandRequest;
+import com.etiya.recapProject.entities.requests.brandRequest.CreateBrandRequest;
+import com.etiya.recapProject.entities.requests.brandRequest.DeleteBrandRequest;
+import com.etiya.recapProject.entities.requests.brandRequest.UpdateBrandRequest;
 
 @Service
 public class BrandManager implements BrandService {

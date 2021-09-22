@@ -1,4 +1,6 @@
-package com.etiya.recapProject.entities.requests.CarImageRequest;
+package com.etiya.recapProject.entities.requests.carImageRequest;
+
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +12,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DeleteCarImageRequest {
+	
+	@NotNull
 	private int carId;
 	
+	@NotNull
 	private String imageName;
 }

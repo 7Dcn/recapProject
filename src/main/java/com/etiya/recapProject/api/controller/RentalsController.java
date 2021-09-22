@@ -15,8 +15,8 @@ import com.etiya.recapProject.business.abstracts.RentalService;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
 import com.etiya.recapProject.entities.concretes.Rental;
-import com.etiya.recapProject.entities.requests.RentalRequest.CreateRentalRequest;
-import com.etiya.recapProject.entities.requests.RentalRequest.UpdateRentalRequest;
+import com.etiya.recapProject.entities.requests.rentalRequest.CreateRentalRequest;
+import com.etiya.recapProject.entities.requests.rentalRequest.UpdateRentalRequest;
 
 @RestController
 @RequestMapping("api/rentals")
@@ -30,14 +30,24 @@ public class RentalsController {
 		this.rentalService = rentalService;
 	}
 	
-	@PostMapping("/add")
-	public Result add(@Valid @RequestBody CreateRentalRequest createRentalRequest) {
-		return this.rentalService.add(createRentalRequest);
+	@PostMapping("/addrentalforindividualcustomer")
+	public Result addRentalForIndividualCustomer(@Valid @RequestBody CreateRentalRequest createRentalRequest) {
+		return this.rentalService.addRentalForIndividualCustomer(createRentalRequest);
 	}
 	
-	@PostMapping("/update")
-	public Result update(@Valid @RequestBody UpdateRentalRequest updateRentalRequest) {
-		return this.rentalService.update(updateRentalRequest);
+	@PostMapping("/updaterentalforindividualcustomer")
+	public Result updateRentalForIndividualCustomer(@Valid @RequestBody UpdateRentalRequest updateRentalRequest) {
+		return this.rentalService.updateRentalForIndividualCustomer(updateRentalRequest);
+	}
+	
+	@PostMapping("/addrentalforcorporatecustomer")
+	public Result addRentalForCorporateCustomer(@Valid @RequestBody CreateRentalRequest createRentalRequest) {
+		return this.rentalService.addRentalForCorporateCustomer(createRentalRequest);
+	}
+	
+	@PostMapping("/updaterentalforcopporatecustomer")
+	public Result updateRentalForCorporateCustomer(@Valid @RequestBody UpdateRentalRequest updateRentalRequest) {
+		return this.rentalService.updateRentalForCorporateCustomer(updateRentalRequest);
 	}
 	
 	@GetMapping("/getall")

@@ -44,6 +44,9 @@ public class Car {
 	@Column(name="description")
 	private String description;
 	
+	@Column(name="findex_point")
+	private int findexPoint;
+	
 	@ManyToOne
 	@JoinColumn(name="brand_id")
 	private Brand brand; 

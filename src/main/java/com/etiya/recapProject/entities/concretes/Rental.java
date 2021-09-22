@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.etiya.recapProject.entities.abstracts.Customer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.Nullable;
 

@@ -31,10 +31,14 @@ public class Messages {
     
     public static final String USERLIST = "Users listed.";
     
+    public static final String EMAILERROR = "This email is used.";
+    
     public static final String RENTALADD = "Rental added.";
+    public static final String RENTALUPDATE = "Rental updated.";
     public static final String RENTALLIST = "Rentals listed.";
     public static final String RENTALDATEERROR = "Vehicle can not rented.";
     public static final String RENTALDATESUCCESS = "Vehicle can be rented.";
+    public static final String RENTALFINDEXPOINTERROR = "Your findex point score is not enough for this car.";
     
     public static final String CARIMAGEADD = "Car image added.";
     public static final String CARIMAGEUPDATE = "Car image updated.";
@@ -42,4 +46,15 @@ public class Messages {
     public static final String CARIMAGELIST = "Car images listed.";
     public static final String CARIMAGELIMITERROR = "A car can not have more than 5 pictures.";
     public static final String CARIMAGEDEFAULT = "Showing default image";
+    public static final String CARIMAGEEMPTY = "No image selected.";
+    public static final String CARIMAGETYPEERROR = "The file you selected is not an image file.";
+    
+    public static final String LOGINEMAILERROR = "This email is not registered";
+    public static final String LOGINPASSWORDERROR = "Wrong password.";
+    public static final String LOGINSUCCESS = "Login successful.";
+    
+    public static final String CREDITCARDADD = "CreditCard image added.";
+    public static final String CREDITCARDUPDATE = "CreditCard image updated.";
+    public static final String CREDITCARDELETE = "CreditCard image deleted.";
+    public static final String CREDITCARDLIST = "CreditCard images listed.";
 }

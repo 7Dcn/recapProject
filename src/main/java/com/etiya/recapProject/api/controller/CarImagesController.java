@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,14 +19,14 @@ import com.etiya.recapProject.business.abstracts.CarImageService;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
 import com.etiya.recapProject.entities.concretes.CarImage;
-import com.etiya.recapProject.entities.requests.CarImageRequest.CreateCarImageRequest;
-import com.etiya.recapProject.entities.requests.CarImageRequest.DeleteCarImageRequest;
-import com.etiya.recapProject.entities.requests.CarImageRequest.UpdateCarImageRequest;
+import com.etiya.recapProject.entities.requests.carImageRequest.CreateCarImageRequest;
+import com.etiya.recapProject.entities.requests.carImageRequest.DeleteCarImageRequest;
+import com.etiya.recapProject.entities.requests.carImageRequest.UpdateCarImageRequest;
 
 @RestController
 @RequestMapping("api/carimages")
 public class CarImagesController {
-	
+
 	private CarImageService carImageService;
 
 	@Autowired
@@ -35,15 +36,29 @@ public class CarImagesController {
 	}
 
 	@PostMapping("/add")
-	Result add(@Valid CreateCarImageRequest createCarImageRequest, MultipartFile file) throws IOException {
+	Result add(@Valid @RequestParam("carId") int carId, @RequestParam("imageName") String imageName, MultipartFile file)
+			throws IOException {
 
-		return this.carImageService.add(createCarImageRequest, file);
+		CreateCarImageRequest createCarImageRequest = new CreateCarImageRequest();
+
+		createCarImageRequest.setCarId(carId);
+		createCarImageRequest.setFile(file);
+		createCarImageRequest.setImageName(imageName);
+
+		return this.carImageService.add(createCarImageRequest);
 	}
 
 	@PostMapping("/update")
-	Result update(@Valid @RequestBody UpdateCarImageRequest updateCarImageRequest, MultipartFile file)throws IOException {
+	Result update(@Valid @RequestParam("id") int id, @RequestParam("carId") int carId,
+			@RequestParam("imageName") String imageName, MultipartFile file) throws IOException {
 
-		return this.carImageService.update(updateCarImageRequest, file);
+		UpdateCarImageRequest updateCarImageRequest = new UpdateCarImageRequest();
+		updateCarImageRequest.setId(id);
+		updateCarImageRequest.setCarId(carId);
+		updateCarImageRequest.setFile(file);
+		updateCarImageRequest.setImageName(imageName);
+		
+		return this.carImageService.update(updateCarImageRequest);
 	}
 
 	@PutMapping("/delete")

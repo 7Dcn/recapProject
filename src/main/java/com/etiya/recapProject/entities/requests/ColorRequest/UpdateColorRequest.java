@@ -1,6 +1,5 @@
-package com.etiya.recapProject.entities.requests.ColorRequest;
+package com.etiya.recapProject.entities.requests.colorRequest;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -14,9 +13,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UpdateColorRequest {
 
+	@NotNull
 	private int id;
 
 	@NotNull
-	@NotBlank
 	private String colorName;
 }

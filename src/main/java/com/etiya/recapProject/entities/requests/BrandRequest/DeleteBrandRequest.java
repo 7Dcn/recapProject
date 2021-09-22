@@ -1,4 +1,6 @@
-package com.etiya.recapProject.entities.requests.BrandRequest;
+package com.etiya.recapProject.entities.requests.brandRequest;
+
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,5 +13,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class DeleteBrandRequest {
 	
+	@NotNull
 	private String brandName;
 }

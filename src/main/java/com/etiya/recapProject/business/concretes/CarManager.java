@@ -16,9 +16,9 @@ import com.etiya.recapProject.entities.concretes.Brand;
 import com.etiya.recapProject.entities.concretes.Car;
 import com.etiya.recapProject.entities.concretes.Color;
 import com.etiya.recapProject.entities.dtos.CarDetailDto;
-import com.etiya.recapProject.entities.requests.CarRequest.CreateCarRequest;
-import com.etiya.recapProject.entities.requests.CarRequest.DeleteCarRequest;
-import com.etiya.recapProject.entities.requests.CarRequest.UpdateCarRequest;
+import com.etiya.recapProject.entities.requests.carRequest.CreateCarRequest;
+import com.etiya.recapProject.entities.requests.carRequest.DeleteCarRequest;
+import com.etiya.recapProject.entities.requests.carRequest.UpdateCarRequest;
 
 @Service
 public class CarManager implements CarService {
@@ -45,6 +45,7 @@ public class CarManager implements CarService {
 		car.setDailyPrice(createCarRequest.getDailyPrice());
 		car.setDescription(createCarRequest.getDescription());
 		car.setModelYear(createCarRequest.getModelYear());
+		car.setFindexPoint(createCarRequest.getFindexPoint());
 		car.setBrand(brand);
 		car.setColor(color);
 		
@@ -66,6 +67,7 @@ public class CarManager implements CarService {
 		car.setDailyPrice(updateCarRequest.getDailyPrice());
 		car.setDescription(updateCarRequest.getDescription());
 		car.setModelYear(updateCarRequest.getModelYear());
+		car.setFindexPoint(updateCarRequest.getFindexPoint());
 		car.setBrand(brand);
 		car.setColor(color);
 		

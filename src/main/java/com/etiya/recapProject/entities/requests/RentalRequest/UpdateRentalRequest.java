@@ -1,8 +1,7 @@
-package com.etiya.recapProject.entities.requests.RentalRequest;
+package com.etiya.recapProject.entities.requests.rentalRequest;
 
 import java.util.Date;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -16,16 +15,18 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UpdateRentalRequest {
 
+	@NotNull
 	private int id;
 	
 	@NotNull
-	@NotBlank
 	private Date rentDate;
 	
 	private Date returnDate;
 	
+	@NotNull
 	private int carId;
 	
+	@NotNull
 	private int customerId;
 	
 	private boolean rentStatus;
