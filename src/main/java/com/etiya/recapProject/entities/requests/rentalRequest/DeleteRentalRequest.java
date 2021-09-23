@@ -1,6 +1,4 @@
-package com.etiya.recapProject.entities.requests.colorRequest;
-
-import javax.validation.constraints.NotNull;
+package com.etiya.recapProject.entities.requests.rentalRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,8 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteColorRequest {
-	
-	@NotNull
+public class DeleteRentalRequest {
 	private int id;
 }

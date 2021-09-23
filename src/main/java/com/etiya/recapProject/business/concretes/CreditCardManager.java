@@ -21,7 +21,7 @@ import com.etiya.recapProject.entities.requests.creditCardRequest.UpdateCreditCa
 @Service
 public class CreditCardManager implements CreditCardService {
 
-	CreditCardDao creditCardDao;
+	private CreditCardDao creditCardDao;
 
 	@Autowired
 	public CreditCardManager(CreditCardDao creditCardDao) {
@@ -65,8 +65,7 @@ public class CreditCardManager implements CreditCardService {
 
 	@Override
 	public Result delete(DeleteCreditCardRequest deleteCreditCardRequest) {
-		CreditCard creditCard = new CreditCard();
-		creditCard.setId(deleteCreditCardRequest.getCardId());
+		CreditCard creditCard = this.creditCardDao.getById(deleteCreditCardRequest.getId());
 
 		this.creditCardDao.delete(creditCard);
 		

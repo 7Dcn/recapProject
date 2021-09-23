@@ -44,8 +44,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 
 	@Override
 	public Result update(UpdateIndividualCustomerRequest updateIndividualCustomerRequest) {
-		IndividualCustomer individualCustomer = new IndividualCustomer();
-		individualCustomer.setId(updateIndividualCustomerRequest.getId());
+		IndividualCustomer individualCustomer = this.individualCustomerDao.getById(updateIndividualCustomerRequest.getId());
 		individualCustomer.setEmail(updateIndividualCustomerRequest.getEmail());
 		individualCustomer.setPassword(updateIndividualCustomerRequest.getPassword());
 		individualCustomer.setFirstName(updateIndividualCustomerRequest.getFirstName());
@@ -58,10 +57,9 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 
 	@Override
 	public Result delete(DeleteIndividualCustomerRequest deleteIndividualCustomerRequest) {
-		IndividualCustomer individualCustomer = new IndividualCustomer();
-		individualCustomer.setId(this.individualCustomerDao.getByFirstName(deleteIndividualCustomerRequest.getFirstName()).getId());
+		IndividualCustomer individualCustomer = this.individualCustomerDao.getById(deleteIndividualCustomerRequest.getId());
 
-		this.individualCustomerDao.deleteById(individualCustomer.getId());
+		this.individualCustomerDao.delete(individualCustomer);
 		return new SuccessResult(Messages.CUSTOMERDELETE);
 	}
 

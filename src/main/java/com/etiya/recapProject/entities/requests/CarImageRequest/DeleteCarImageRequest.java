@@ -14,8 +14,5 @@ import lombok.Setter;
 public class DeleteCarImageRequest {
 	
 	@NotNull
-	private int carId;
-	
-	@NotNull
-	private String imageName;
+	private int id;
 }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,8 @@ public class CarImageManager implements CarImageService {
 
 		String imagePathGuid = java.util.UUID.randomUUID().toString();
 
-		File imageFile = new File(ImagePath.CARIMAGEPATH + imagePathGuid);
+		File imageFile = new File(ImagePath.CARIMAGEPATH + imagePathGuid + "." + createCarImageRequest.getFile()
+				.getContentType().substring(createCarImageRequest.getFile().getContentType().indexOf("/") + 1));
 
 		imageFile.createNewFile();
 		FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
@@ -77,7 +79,8 @@ public class CarImageManager implements CarImageService {
 
 		String imagePathGuid = java.util.UUID.randomUUID().toString();
 
-		File imageFile = new File(ImagePath.CARIMAGEPATH + imagePathGuid);
+		File imageFile = new File(ImagePath.CARIMAGEPATH + imagePathGuid + "." + updateCarImageRequest.getFile()
+				.getContentType().substring(updateCarImageRequest.getFile().getContentType().indexOf("/") + 1));
 
 		imageFile.createNewFile();
 		FileOutputStream outputImage = new FileOutputStream(imageFile);
@@ -87,8 +90,7 @@ public class CarImageManager implements CarImageService {
 		Car car = new Car();
 		car.setId(updateCarImageRequest.getCarId());
 
-		CarImage carImage = new CarImage();
-		carImage.setId(updateCarImageRequest.getCarId());
+		CarImage carImage = this.carImageDao.getById(updateCarImageRequest.getId());
 		carImage.setDate(LocalDate.now());
 		carImage.setImagePath(imageFile.toString());
 		carImage.setImageName(updateCarImageRequest.getImageName());
@@ -101,10 +103,9 @@ public class CarImageManager implements CarImageService {
 
 	@Override
 	public Result delete(DeleteCarImageRequest deleteCarImageRequest) {
-		Car car = new Car();
-		car.setId(deleteCarImageRequest.getCarId());
+		CarImage carImage = this.carImageDao.getById(deleteCarImageRequest.getId());
 
-		this.carImageDao.deleteById(car.getId());
+		this.carImageDao.delete(carImage);
 		return new SuccessResult(Messages.CARIMAGEDELETE);
 	}
 
@@ -114,25 +115,13 @@ public class CarImageManager implements CarImageService {
 	}
 
 	@Override
-	public DataResult<List<CarImage>> getImagesWithCarId(int id) {
-		if (!checkImageIsEmpty(id).isSuccess()) {
-			File defaultImagePath = new File(ImagePath.CARDEFAULTIMAGEPATH);
-			System.out.println(defaultImagePath);
-			return new SuccessDataResult<List<CarImage>>(Messages.CARIMAGEDEFAULT);
-		}
-		return new SuccessDataResult<List<CarImage>>(this.carImageDao.getByCar_Id(id), Messages.CARIMAGELIST);
+	public DataResult<List<CarImage>> getImagesWithCarId(int carId) {
+		return new SuccessDataResult<List<CarImage>>(this.ifCarImageIsNullAddDefault(carId));
 	}
 
 	private Result checkImagesNumberLimit(int carId, int limit) {
 		if (this.carImageDao.countCarImageByCar_Id(carId) >= limit) {
 			return new ErrorResult(Messages.CARIMAGELIMITERROR);
-		}
-		return new SuccessResult();
-	}
-
-	private Result checkImageIsEmpty(int carId) {
-		if (this.carImageDao.getImagePathByCar_Id(carId) == null) {
-			return new ErrorResult();
 		}
 		return new SuccessResult();
 	}
@@ -177,4 +166,23 @@ public class CarImageManager implements CarImageService {
 
 	}
 	
+	private List<CarImage> ifCarImageIsNullAddDefault(int carId) {
+		if (this.carImageDao.getByCar_Id(carId).isEmpty()) {
+
+			Car car = new Car();
+			car.setId(carId);
+
+			CarImage carImage=new CarImage();
+			carImage.setCar(car);
+			carImage.setImagePath(ImagePath.CARDEFAULTIMAGEPATH);
+	
+			List<CarImage> carImages=new ArrayList<CarImage>();
+			carImages.add(carImage);
+			
+			return carImages;
+		    
+		}
+		return new ArrayList<CarImage>(this.carImageDao.getByCar_Id(carId));
+	}
+
 }

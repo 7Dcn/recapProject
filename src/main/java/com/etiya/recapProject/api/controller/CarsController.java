@@ -63,14 +63,14 @@ public class CarsController {
 		return this.carService.getCarsWithBrandAndColorDetails();
 	}
 	
-	@GetMapping("/getcarsbybrandname")
-	public DataResult<List<CarDetailDto>> getCarsByBrandName(String brandName) {
-		return this.carService.getCarsByBrandName(brandName);
+	@GetMapping("/getcarsbybrand")
+	public DataResult<List<Car>> getCarsByBrand(int brandId) {
+		return this.carService.getCarsByBrand(brandId);
 	}
 	
-	@GetMapping("/getcarsbycolorname")
-	public DataResult<List<CarDetailDto>> getCarsByColorName(String colorName) {
-		return this.carService.getCarsByColorName(colorName);
+	@GetMapping("/getcarsbycolor")
+	public DataResult<List<Car>> getCarsByColor(int colorId) {
+		return this.carService.getCarsByColor(colorId);
 	}
 	
 	@GetMapping("/getbycarname")

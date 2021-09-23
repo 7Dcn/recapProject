@@ -14,6 +14,6 @@ import lombok.Setter;
 public class DeleteCreditCardRequest {
 
 	@NotNull
-	private int cardId;
+	private int id;
 
 }

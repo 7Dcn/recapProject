@@ -14,5 +14,5 @@ import lombok.Setter;
 public class DeleteIndividualCustomerRequest {
 	
 	@NotNull
-	private String firstName;
+	private int id;
 }

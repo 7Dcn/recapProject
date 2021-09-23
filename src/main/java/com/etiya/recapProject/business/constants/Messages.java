@@ -1,6 +1,10 @@
 package com.etiya.recapProject.business.constants;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class Messages {
+	
 	public static final String REQUIRED = "required";
     public static final String SIZE = "size must be between {min} and {max}";
     public static final String MIN = "must be greater than {value}";
@@ -13,6 +17,7 @@ public class Messages {
     public static final String BRANDUPDATE = "Brand updated.";
     public static final String BRANDDELETE = "Brand deleted.";
     public static final String BRANDLIST = "Brands listed.";
+    public static final String BRANDNAMEERROR = "This brand exists.";
     
     public static final String CARADD = "Car added.";
     public static final String CARUPDATE = "Car updated.";
@@ -23,6 +28,7 @@ public class Messages {
     public static final String COLORUPDATE = "Color updated.";
     public static final String COLORDELETE = "Color deleted.";
     public static final String COLORLIST = "Colors listed.";
+    public static final String COLORNAMEERROR = "This color exists.";
     
     public static final String CUSTOMERADD = "Customer added.";
     public static final String CUSTOMERUPDATE = "Customer updated.";
@@ -35,6 +41,7 @@ public class Messages {
     
     public static final String RENTALADD = "Rental added.";
     public static final String RENTALUPDATE = "Rental updated.";
+    public static final String RENTALDELETE = "Rental deleted.";
     public static final String RENTALLIST = "Rentals listed.";
     public static final String RENTALDATEERROR = "Vehicle can not rented.";
     public static final String RENTALDATESUCCESS = "Vehicle can be rented.";

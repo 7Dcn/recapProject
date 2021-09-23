@@ -24,6 +24,7 @@ import com.etiya.recapProject.entities.concretes.IndividualCustomer;
 import com.etiya.recapProject.entities.concretes.Rental;
 import com.etiya.recapProject.entities.dtos.RentalDetailDto;
 import com.etiya.recapProject.entities.requests.rentalRequest.CreateRentalRequest;
+import com.etiya.recapProject.entities.requests.rentalRequest.DeleteRentalRequest;
 import com.etiya.recapProject.entities.requests.rentalRequest.UpdateRentalRequest;
 
 @Service
@@ -147,6 +148,14 @@ public class RentalManager implements RentalService {
 
 		this.rentalDao.save(rental);
 		return new SuccessResult(Messages.RENTALUPDATE);
+	}
+	
+	@Override
+	public Result deleteRental(DeleteRentalRequest deleteRentalRequest) {
+		Rental rental = this.rentalDao.getById(deleteRentalRequest.getId());
+		
+		this.rentalDao.delete(rental);
+		return new SuccessResult(Messages.RENTALDELETE);
 	}
 
 	@Override

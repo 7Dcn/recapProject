@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.etiya.recapProject.business.abstracts.ColorService;
 import com.etiya.recapProject.business.constants.Messages;
+import com.etiya.recapProject.core.business.BusinessRules;
 import com.etiya.recapProject.core.utilities.results.DataResult;
+import com.etiya.recapProject.core.utilities.results.ErrorResult;
 import com.etiya.recapProject.core.utilities.results.Result;
 import com.etiya.recapProject.core.utilities.results.SuccessDataResult;
 import com.etiya.recapProject.core.utilities.results.SuccessResult;
@@ -30,6 +32,12 @@ public class ColorManager implements ColorService {
 	
 	@Override
 	public Result add(CreateColorRequest createColorRequest) {
+		
+		var result = BusinessRules.run(checkColorName(createColorRequest.getColorName()));
+		if (result != null) {
+			return result;
+		}
+		
 		Color color = new Color();
 		color.setColorName(createColorRequest.getColorName());
 		
@@ -39,8 +47,7 @@ public class ColorManager implements ColorService {
 
 	@Override
 	public Result update(UpdateColorRequest updateColorRequest) {
-		Color color = new Color();
-		color.setId(updateColorRequest.getId());
+		Color color = this.colorDao.getById(updateColorRequest.getId());
 		color.setColorName(updateColorRequest.getColorName());
 		
 		this.colorDao.save(color);
@@ -49,10 +56,9 @@ public class ColorManager implements ColorService {
 
 	@Override
 	public Result delete(DeleteColorRequest deleteColorRequest) {
-		Color color = new Color();
-		color.setId(this.colorDao.getByColorName(deleteColorRequest.getColorName()).getId());
+		Color color = this.colorDao.getById(deleteColorRequest.getId());
 		
-		this.colorDao.deleteById(color.getId());
+		this.colorDao.delete(color);
 		return new SuccessResult(Messages.COLORDELETE);
 	}
 
@@ -64,6 +70,14 @@ public class ColorManager implements ColorService {
 	@Override
 	public DataResult<Color> findById(int id) {
 		return new SuccessDataResult<Color>(this.colorDao.findById(id).get());
+	}
+	
+	public Result checkColorName(String colorName) {
+
+		if (this.colorDao.existsColorByColorName(colorName)) {
+			return new ErrorResult(Messages.COLORNAMEERROR);
+		}
+		return new SuccessResult();
 	}
 
 }

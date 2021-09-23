@@ -1,6 +1,5 @@
 package com.etiya.recapProject.entities.requests.corporateCustomerRequest;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -15,6 +14,5 @@ import lombok.Setter;
 public class DeleteCorporateCustomerRequest {
 	
 	@NotNull
-	@NotBlank
-	private String taxNumber;
+	private int id;
 }

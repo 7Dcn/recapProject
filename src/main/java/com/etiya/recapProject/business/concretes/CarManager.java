@@ -61,8 +61,7 @@ public class CarManager implements CarService {
 		Color color = new Color();
 		color.setId(updateCarRequest.getColorId());
 		
-		Car car = new Car();
-		car.setId(updateCarRequest.getId());
+		Car car = this.carDao.getById(updateCarRequest.getId());
 		car.setCarName(updateCarRequest.getCarName());
 		car.setDailyPrice(updateCarRequest.getDailyPrice());
 		car.setDescription(updateCarRequest.getDescription());
@@ -77,10 +76,9 @@ public class CarManager implements CarService {
 
 	@Override
 	public Result delete(DeleteCarRequest deleteCarRequest) {
-		Car car = new Car();
-		car.setId(this.carDao.getByCarName(deleteCarRequest.getCarName()).getId());
+		Car car = this.carDao.getById(deleteCarRequest.getId());
 		
-		this.carDao.deleteById(car.getId());
+		this.carDao.delete(car);
 		return new SuccessResult(Messages.CARDELETE);
 	}
 
@@ -101,15 +99,15 @@ public class CarManager implements CarService {
 	}
 	
 	@Override
-	public DataResult<List<CarDetailDto>> getCarsByBrandName(String brandName) {
-		List<CarDetailDto> cars = this.carDao.getCarsByBrandName(brandName);
-		return new SuccessDataResult<List<CarDetailDto>>(cars, Messages.CARLIST);
+	public DataResult<List<Car>> getCarsByBrand(int brandId) {
+		List<Car> cars = this.carDao.getByBrand_Id(brandId);
+		return new SuccessDataResult<List<Car>>(cars, Messages.CARLIST);
 	}
 
 	@Override
-	public DataResult<List<CarDetailDto>> getCarsByColorName(String colorName) {
-		List<CarDetailDto> cars = this.carDao.getCarsByColorName(colorName);
-		return new SuccessDataResult<List<CarDetailDto>>(cars, Messages.CARLIST);
+	public DataResult<List<Car>> getCarsByColor(int colorId) {
+		List<Car> cars = this.carDao.getByColor_Id(colorId);
+		return new SuccessDataResult<List<Car>>(cars, Messages.CARLIST);
 	}
 
 	@Override

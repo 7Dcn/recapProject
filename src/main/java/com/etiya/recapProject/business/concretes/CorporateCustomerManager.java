@@ -54,10 +54,7 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 
 	@Override
 	public Result update(UpdateCorporateCustomerRequest updateCorporateCustomerRequest) {
-		CorporateCustomer corporateCustomer = this.corporateCustomerDao
-				.getByTaxNumber(updateCorporateCustomerRequest.getTaxNumber());
-		corporateCustomer.setId(updateCorporateCustomerRequest.getId());
-
+		CorporateCustomer corporateCustomer = this.corporateCustomerDao.getById(updateCorporateCustomerRequest.getId());
 		corporateCustomer.setCompanyName(updateCorporateCustomerRequest.getCompanyName());
 		corporateCustomer.setEmail(updateCorporateCustomerRequest.getEmail());
 		corporateCustomer.setPassword(updateCorporateCustomerRequest.getPassword());
@@ -69,11 +66,9 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 
 	@Override
 	public Result delete(DeleteCorporateCustomerRequest deleteCorporateCustomerRequest) {
-		CorporateCustomer corporateCustomer = new CorporateCustomer();
-		corporateCustomer
-				.setId(this.corporateCustomerDao.getByTaxNumber(deleteCorporateCustomerRequest.getTaxNumber()).getId());
+		CorporateCustomer corporateCustomer = this.corporateCustomerDao.getById(deleteCorporateCustomerRequest.getId());
 
-		this.corporateCustomerDao.deleteById(corporateCustomer.getId());
+		this.corporateCustomerDao.delete(corporateCustomer);
 		return new SuccessResult(Messages.CUSTOMERDELETE);
 	}
 
