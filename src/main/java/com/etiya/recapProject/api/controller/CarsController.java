@@ -78,4 +78,9 @@ public class CarsController {
 		return this.carService.getByCarName(carName);
 	}
 	
+	@GetMapping("/getavailablecars")
+	public DataResult<List<Car>> getAvailableCars() {
+		return this.carService.getAvailableCars();
+	}
+	
 }

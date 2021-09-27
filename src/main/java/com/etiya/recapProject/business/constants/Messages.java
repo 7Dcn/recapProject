@@ -46,6 +46,7 @@ public class Messages {
     public static final String RENTALDATEERROR = "Vehicle can not rented.";
     public static final String RENTALDATESUCCESS = "Vehicle can be rented.";
     public static final String RENTALFINDEXPOINTERROR = "Your findex point score is not enough for this car.";
+    public static final String RENTALMAINTENANCEERROR = "The car is currently under maintenance.";
     
     public static final String CARIMAGEADD = "Car image added.";
     public static final String CARIMAGEUPDATE = "Car image updated.";
@@ -60,8 +61,24 @@ public class Messages {
     public static final String LOGINPASSWORDERROR = "Wrong password.";
     public static final String LOGINSUCCESS = "Login successful.";
     
-    public static final String CREDITCARDADD = "CreditCard image added.";
-    public static final String CREDITCARDUPDATE = "CreditCard image updated.";
-    public static final String CREDITCARDELETE = "CreditCard image deleted.";
-    public static final String CREDITCARDLIST = "CreditCard images listed.";
+    public static final String CREDITCARDADD = "Credit card image added.";
+    public static final String CREDITCARDUPDATE = "Credit card image updated.";
+    public static final String CREDITCARDELETE = "Credit card image deleted.";
+    public static final String CREDITCARDLIST = "Credit card images listed.";
+    public static final String CREDITCARDNUMBERERROR = "Credit card number is invalid.";
+    public static final String CREDITCARDDATEERROR = "Credit card date is invalid.";
+    public static final String CREDITCARDCVCERROR = "Credit card CVC is invalid.";
+    
+    public static final String PAYMENTADD = "Payment added.";
+    public static final String PAYMENTUPDATE = "Payment updated.";
+    public static final String PAYMENTDELETE = "Payment deleted.";
+    public static final String PAYMENTLIST = "Payments listed.";
+    public static final String PAYMENTCARDSAVE = "Credit card saved.";
+    public static final String PAYMENTCARDNOTSAVE = "Credit card not saved.";
+    
+    public static final String CARMAINTENANCEADD = "Car maintenance added.";
+    public static final String CARMAINTENANCEUPDATE = "Car maintenance updated.";
+    public static final String CARMAINTENANCEDELETE = "Car maintenance deleted.";
+    public static final String CARMAINTENANCELIST = "Cars in maintenance listed.";
+    public static final String CARMAINTENANCERENTALERROR = "The car is currently rented.";
 }

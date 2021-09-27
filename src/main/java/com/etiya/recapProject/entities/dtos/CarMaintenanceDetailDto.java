@@ -11,10 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RentalDetailDto {
-
-	private int id;
-
+public class CarMaintenanceDetailDto {
+	
 	private Date returnDate;
 }
-

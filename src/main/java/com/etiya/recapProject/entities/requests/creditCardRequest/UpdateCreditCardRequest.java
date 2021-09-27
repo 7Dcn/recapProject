@@ -29,5 +29,5 @@ public class UpdateCreditCardRequest {
 	private String cvc;
 
 	@NotNull
-	private String cardDate;
+	private String expiryDate;
 }

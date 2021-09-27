@@ -1,7 +1,5 @@
 package com.etiya.recapProject.entities.concretes;
 
-import java.time.LocalDate;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,27 +16,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "car_images")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler"})
-public class CarImage {
+@Table(name = "payment")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+public class Payment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int id;
-
-	@Column(name = "image_name")
-	private String imageName;
-	
-	@Column(name = "image_path")
-	private String imagePath;
-
-	@Column(name = "date")
-	private LocalDate date;
+	private int Id;
 
 	@ManyToOne
-	@JoinColumn(name = "car_id")
-	private Car car;
+	@JoinColumn(name = "rental_id")
+	private Rental rental;
+
+	@ManyToOne
+	@JoinColumn(name = "credit_card_id")
+	private CreditCard creditCard;
 }

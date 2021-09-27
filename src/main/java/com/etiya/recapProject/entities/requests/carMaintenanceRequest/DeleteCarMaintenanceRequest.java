@@ -1,6 +1,6 @@
-package com.etiya.recapProject.entities.dtos;
+package com.etiya.recapProject.entities.requests.carMaintenanceRequest;
 
-import java.util.Date;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,10 +11,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RentalDetailDto {
-
+public class DeleteCarMaintenanceRequest {
+	
+	@NotNull
 	private int id;
-
-	private Date returnDate;
 }
-

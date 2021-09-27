@@ -26,5 +26,5 @@ public class CreateCreditCardRequest {
 	private String cvc;
 
 	@NotNull
-	private String cardDate;
+	private String expiryDate;
 }

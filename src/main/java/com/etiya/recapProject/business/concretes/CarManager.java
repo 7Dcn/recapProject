@@ -114,4 +114,21 @@ public class CarManager implements CarService {
 	public DataResult<Car> getByCarName(String carName) {
 		return new SuccessDataResult<Car>(this.carDao.getByCarName(carName));
 	}
+	
+	@Override
+	public DataResult<List<Car>> getAvailableCars() {
+		
+		List<Car> cars = this.carDao.findAll();
+		
+		List<Car> carsInMaintenance = this.carDao.findByCarMaintenances_ReturnStatus(false);
+		
+		List<Car> rentedCars = this.carDao.findByRentals_ReturnStatus(false);
+		
+		cars.removeAll(carsInMaintenance);
+		
+		cars.removeAll(rentedCars);
+		
+		return new SuccessDataResult<List<Car>>(cars, Messages.CARLIST);
+	}
+	
 }
