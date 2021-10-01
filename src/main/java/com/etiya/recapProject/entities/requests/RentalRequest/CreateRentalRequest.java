@@ -1,10 +1,12 @@
 package com.etiya.recapProject.entities.requests.rentalRequest;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import com.etiya.recapProject.entities.dtos.AdditionalServiceDto;
 import com.etiya.recapProject.entities.dtos.PaymentDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -34,7 +36,7 @@ public class CreateRentalRequest {
 	@JsonIgnore
 	private int startKilometer;
 
-	@NotNull
+	@JsonIgnore
 	private String pickUpLocation;
 
 	@NotNull
@@ -46,4 +48,6 @@ public class CreateRentalRequest {
 	@NotNull
 	@Valid
 	private PaymentDto paymentDto;
+	
+	private List<AdditionalServiceDto> additionalServiceDtos;
 }

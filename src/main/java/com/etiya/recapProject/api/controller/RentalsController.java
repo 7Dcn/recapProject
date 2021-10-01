@@ -1,5 +1,6 @@
 package com.etiya.recapProject.api.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -16,6 +17,7 @@ import com.etiya.recapProject.business.abstracts.RentalService;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
 import com.etiya.recapProject.entities.concretes.Rental;
+import com.etiya.recapProject.entities.dtos.AdditionalServiceDto;
 import com.etiya.recapProject.entities.requests.rentalRequest.CreateRentalRequest;
 import com.etiya.recapProject.entities.requests.rentalRequest.DeleteRentalRequest;
 import com.etiya.recapProject.entities.requests.rentalRequest.UpdateRentalRequest;
@@ -34,6 +36,15 @@ public class RentalsController {
 
 	@PostMapping("/addrentalforindividualcustomer")
 	public Result addRentalForIndividualCustomer(@Valid @RequestBody CreateRentalRequest createRentalRequest) {
+
+		List<AdditionalServiceDto> additionalServiceDtos = new ArrayList<AdditionalServiceDto>();
+
+		for (AdditionalServiceDto additionalServiceItem : createRentalRequest.getAdditionalServiceDtos()) {
+			additionalServiceDtos.add(additionalServiceItem);
+		}
+
+		createRentalRequest.setAdditionalServiceDtos(additionalServiceDtos);
+		
 		return this.rentalService.addRentalForIndividualCustomer(createRentalRequest);
 	}
 
