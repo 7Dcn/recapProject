@@ -33,22 +33,24 @@ public class CarManager implements CarService {
 
 	@Override
 	public Result add(CreateCarRequest createCarRequest) {
-		
+
 		Brand brand = new Brand();
 		brand.setId(createCarRequest.getBrandId());
-		
+
 		Color color = new Color();
 		color.setId(createCarRequest.getColorId());
-		
+
 		Car car = new Car();
 		car.setCarName(createCarRequest.getCarName());
 		car.setDailyPrice(createCarRequest.getDailyPrice());
 		car.setDescription(createCarRequest.getDescription());
 		car.setModelYear(createCarRequest.getModelYear());
 		car.setFindexPoint(createCarRequest.getFindexPoint());
+		car.setCityName(createCarRequest.getCityName());
+		car.setCurrentKilometer(createCarRequest.getCurrentKilometer());
 		car.setBrand(brand);
 		car.setColor(color);
-		
+
 		this.carDao.save(car);
 		return new SuccessResult(Messages.CARADD);
 	}
@@ -57,19 +59,21 @@ public class CarManager implements CarService {
 	public Result update(UpdateCarRequest updateCarRequest) {
 		Brand brand = new Brand();
 		brand.setId(updateCarRequest.getBrandId());
-		
+
 		Color color = new Color();
 		color.setId(updateCarRequest.getColorId());
-		
+
 		Car car = this.carDao.getById(updateCarRequest.getId());
 		car.setCarName(updateCarRequest.getCarName());
 		car.setDailyPrice(updateCarRequest.getDailyPrice());
 		car.setDescription(updateCarRequest.getDescription());
 		car.setModelYear(updateCarRequest.getModelYear());
 		car.setFindexPoint(updateCarRequest.getFindexPoint());
+		car.setCityName(updateCarRequest.getCityName());
+		car.setCurrentKilometer(updateCarRequest.getCurrentKilometer());
 		car.setBrand(brand);
 		car.setColor(color);
-		
+
 		this.carDao.save(car);
 		return new SuccessResult(Messages.CARUPDATE);
 	}
@@ -77,7 +81,7 @@ public class CarManager implements CarService {
 	@Override
 	public Result delete(DeleteCarRequest deleteCarRequest) {
 		Car car = this.carDao.getById(deleteCarRequest.getId());
-		
+
 		this.carDao.delete(car);
 		return new SuccessResult(Messages.CARDELETE);
 	}
@@ -97,7 +101,7 @@ public class CarManager implements CarService {
 		List<CarDetailDto> cars = this.carDao.getCarsWithBrandAndColorDetails();
 		return new SuccessDataResult<List<CarDetailDto>>(cars, Messages.CARLIST);
 	}
-	
+
 	@Override
 	public DataResult<List<Car>> getCarsByBrand(int brandId) {
 		List<Car> cars = this.carDao.getByBrand_Id(brandId);
@@ -114,21 +118,28 @@ public class CarManager implements CarService {
 	public DataResult<Car> getByCarName(String carName) {
 		return new SuccessDataResult<Car>(this.carDao.getByCarName(carName));
 	}
-	
+
 	@Override
 	public DataResult<List<Car>> getAvailableCars() {
-		
+
 		List<Car> cars = this.carDao.findAll();
-		
+
 		List<Car> carsInMaintenance = this.carDao.findByCarMaintenances_ReturnStatus(false);
-		
+
 		List<Car> rentedCars = this.carDao.findByRentals_ReturnStatus(false);
-		
+
 		cars.removeAll(carsInMaintenance);
-		
+
 		cars.removeAll(rentedCars);
-		
+
 		return new SuccessDataResult<List<Car>>(cars, Messages.CARLIST);
 	}
-	
+
+	@Override
+	public DataResult<List<Car>> findCarsByCityName(String cityName) {
+
+		List<Car> cars = this.carDao.findByCityName(cityName);
+		return new SuccessDataResult<List<Car>>(cars, Messages.CARLIST);
+	}
+
 }

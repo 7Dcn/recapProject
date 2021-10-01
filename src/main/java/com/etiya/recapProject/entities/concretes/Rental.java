@@ -3,14 +3,17 @@ package com.etiya.recapProject.entities.concretes;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.etiya.recapProject.entities.abstracts.Customer;
@@ -40,9 +43,27 @@ public class Rental {
 	@Column(name = "return_date")
 	@Nullable
 	private Date returnDate;
-	
-	@Column(name = "return_status",columnDefinition = "boolean default false")
+
+	@Column(name = "return_status")
 	private boolean returnStatus;
+
+	@Column(name = "pick_up_location")
+	private String pickUpLocation;
+
+	@Column(name = "drop_off_location")
+	private String dropOffLocation;
+
+	@Column(name = "start_kilometer")
+	private int startKilometer;
+
+	@Column(name = "end_kilometer")
+	private int endKilometer;
+
+	@Column(name = "dailyPrice")
+	private double dailyPrice;
+	
+	@Column(name = "amount")
+	private double amount;
 	
 	@ManyToOne
 	@JoinColumn(name = "car_id")
@@ -51,8 +72,13 @@ public class Rental {
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
-	
-	@OneToMany(mappedBy = "rental")
+
 	@JsonIgnore
-	private List<Payment> payments;
+	@OneToOne
+	@JoinColumn(name = "invoice_id")
+	private Invoice invoice;
+	
+	@ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.MERGE}, mappedBy = "additionalServices")
+	private List<AdditionalService> additionalServices;
+			
 }

@@ -51,7 +51,7 @@ public class CreditCardsController {
 		return this.creditCardService.getAll();
 	}
 
-	@GetMapping("/getB")
+	@GetMapping("/getcreditcardsbycustomerid")
 	public DataResult<List<CreditCard>> getCreditCardByCustomer_Id(int customerId) {
 
 		return this.creditCardService.getCreditCardByCustomer_Id(customerId);

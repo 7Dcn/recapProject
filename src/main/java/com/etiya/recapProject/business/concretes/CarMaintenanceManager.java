@@ -37,14 +37,13 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 
 	@Override
 	public Result add(CreateCarMaintenanceRequest createCarMaintenanceRequest) {
-		
-		var result = BusinessRules.run(
-				checkCarRental(createCarMaintenanceRequest.getCarId()));
+
+		var result = BusinessRules.run(checkIfCarRented(createCarMaintenanceRequest.getCarId()));
 
 		if (result != null) {
 			return result;
 		}
-		
+
 		Car car = new Car();
 		car.setId(createCarMaintenanceRequest.getCarId());
 
@@ -91,13 +90,14 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 				Messages.CARMAINTENANCELIST);
 	}
 
-	private Result checkCarRental(int carId) {
+	private Result checkIfCarRented(int carId) {
 
-		Rental rental = this.rentalDao.getByCar_CarId(carId)
-				.get(this.rentalDao.getByCar_CarId(carId).size() - 1);
+		if (this.rentalDao.getByCar_Id(carId).size() != 0) {
+			Rental rental = this.rentalDao.getByCar_Id(carId).get(this.rentalDao.getByCar_Id(carId).size() - 1);
 
-		if (rental.getReturnDate() == null) {
-			return new ErrorResult(Messages.CARMAINTENANCERENTALERROR);
+			if (rental.getReturnDate() == null) {
+				return new ErrorResult(Messages.CARMAINTENANCERENTALERROR);
+			}
 		}
 		return new SuccessResult();
 	}

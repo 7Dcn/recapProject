@@ -2,7 +2,11 @@ package com.etiya.recapProject.entities.requests.rentalRequest;
 
 import java.util.Date;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
+import com.etiya.recapProject.entities.dtos.PaymentDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,14 +18,32 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateRentalRequest {
-	
+
 	@NotNull
 	private Date rentDate;
 	
 	@NotNull
+	private Date returnDate;
+
+	@NotNull
 	private int carId;
-	
+
 	@NotNull
 	private int customerId;
+
+	@JsonIgnore
+	private int startKilometer;
+
+	@NotNull
+	private String pickUpLocation;
+
+	@NotNull
+	private String dropOffLocation;
 	
+	@JsonIgnore
+	private double dailyPrice;
+	
+	@NotNull
+	@Valid
+	private PaymentDto paymentDto;
 }

@@ -21,7 +21,6 @@ import com.etiya.recapProject.entities.requests.carRequest.CreateCarRequest;
 import com.etiya.recapProject.entities.requests.carRequest.DeleteCarRequest;
 import com.etiya.recapProject.entities.requests.carRequest.UpdateCarRequest;
 
-
 @RestController
 @RequestMapping("api/cars")
 public class CarsController {
@@ -32,55 +31,60 @@ public class CarsController {
 		super();
 		this.carService = carService;
 	}
-	
+
 	@PostMapping("/add")
 	public Result add(@Valid @RequestBody CreateCarRequest createCarRequest) {
 		return this.carService.add(createCarRequest);
 	}
-	
+
 	@PostMapping("/update")
 	public Result update(@Valid @RequestBody UpdateCarRequest updateCarRequest) {
 		return this.carService.update(updateCarRequest);
 	}
-	
+
 	@PutMapping("/delete")
 	public Result delete(@RequestBody DeleteCarRequest deleteCarRequest) {
 		return this.carService.delete(deleteCarRequest);
 	}
-	
+
 	@GetMapping("/getall")
 	public DataResult<List<Car>> getAll() {
 		return this.carService.getAll();
 	}
-	
+
 	@GetMapping("/getbyid")
 	public DataResult<Car> getById(int id) {
 		return this.carService.findById(id);
 	}
-	
+
 	@GetMapping("/getcardetails")
 	public DataResult<List<CarDetailDto>> getCarsDetails() {
 		return this.carService.getCarsWithBrandAndColorDetails();
 	}
-	
+
 	@GetMapping("/getcarsbybrand")
 	public DataResult<List<Car>> getCarsByBrand(int brandId) {
 		return this.carService.getCarsByBrand(brandId);
 	}
-	
+
 	@GetMapping("/getcarsbycolor")
 	public DataResult<List<Car>> getCarsByColor(int colorId) {
 		return this.carService.getCarsByColor(colorId);
 	}
-	
+
 	@GetMapping("/getbycarname")
 	public DataResult<Car> getByCarName(String carName) {
 		return this.carService.getByCarName(carName);
 	}
-	
+
 	@GetMapping("/getavailablecars")
 	public DataResult<List<Car>> getAvailableCars() {
 		return this.carService.getAvailableCars();
 	}
-	
+
+	@GetMapping("/getcarsbycityname")
+	public DataResult<List<Car>> findCarsByCityName(String cityName) {
+		return this.carService.findCarsByCityName(cityName);
+	}
+
 }

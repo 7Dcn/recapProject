@@ -19,7 +19,7 @@ public interface RentalService {
 	
 	Result updateRentalForCorporateCustomer(UpdateRentalRequest updateRentalRequest);
 	
-	Result deleteRental(DeleteRentalRequest deleteRentalRequest);
+	Result delete(DeleteRentalRequest deleteRentalRequest);
 	
 	DataResult<List<Rental>> getAll();
 }

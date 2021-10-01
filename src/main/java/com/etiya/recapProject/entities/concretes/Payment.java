@@ -26,10 +26,9 @@ public class Payment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int Id;
-
-	@ManyToOne
-	@JoinColumn(name = "rental_id")
-	private Rental rental;
+	
+	@Column(name = "amount")
+	private double amount;
 
 	@ManyToOne
 	@JoinColumn(name = "credit_card_id")

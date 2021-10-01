@@ -14,5 +14,5 @@ public interface RentalDao extends JpaRepository<Rental, Integer> {
 			+ 	"From Car c Inner Join c.rentals r where c.id=:carId and r.returnDate is null")
 	RentalDetailDto getByCarIdWhereReturnDateIsNull(int carId);
 	
-	List<Rental> getByCar_CarId(int carId);
+	List<Rental> getByCar_Id(int carId);
 }

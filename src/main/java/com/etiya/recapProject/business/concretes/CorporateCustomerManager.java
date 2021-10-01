@@ -23,10 +23,10 @@ import com.etiya.recapProject.entities.requests.corporateCustomerRequest.UpdateC
 @Service
 public class CorporateCustomerManager implements CorporateCustomerService {
 
-	@Autowired
 	private CorporateCustomerDao corporateCustomerDao;
 	private CustomerDao customerDao;
 
+	@Autowired
 	public CorporateCustomerManager(CorporateCustomerDao corporateCustomerDao, CustomerDao customerDao) {
 		super();
 		this.corporateCustomerDao = corporateCustomerDao;
@@ -36,7 +36,7 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 	@Override
 	public Result add(CreateCorporateCustomerRequest createCorporateCustomerRequest) {
 
-		var result = BusinessRules.run(checkEmail(createCorporateCustomerRequest.getEmail()));
+		var result = BusinessRules.run(checkEmailDuplication(createCorporateCustomerRequest.getEmail()));
 		if (result != null) {
 			return result;
 		}
@@ -78,7 +78,7 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 				Messages.CUSTOMERLIST);
 	}
 
-	public Result checkEmail(String email) {
+	public Result checkEmailDuplication(String email) {
 
 		if (this.customerDao.existsCustomerByEmail(email)) {
 			return new ErrorResult(Messages.EMAILERROR);

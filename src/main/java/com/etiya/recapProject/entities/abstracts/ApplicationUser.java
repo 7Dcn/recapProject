@@ -1,4 +1,4 @@
-package com.etiya.recapProject.entities.concretes;
+package com.etiya.recapProject.entities.abstracts;
 
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;

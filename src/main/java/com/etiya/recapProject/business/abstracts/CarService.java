@@ -30,4 +30,6 @@ public interface CarService {
 	DataResult<Car> getByCarName(String carName);
 	
 	DataResult<List<Car>> getAvailableCars();
+	
+	DataResult<List<Car>> findCarsByCityName(String cityName);
 }

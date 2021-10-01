@@ -35,7 +35,7 @@ public class CreditCardManager implements CreditCardService {
 
 	@Override
 	public Result add(CreateCreditCardRequest createCreditCardRequest) {
-		
+
 		var result = BusinessRules.run(checkCreditCardNumber(createCreditCardRequest.getCardNumber()),
 				checkCreditCardCvc(createCreditCardRequest.getCvc()),
 				checkCreditCardExpiryDate(createCreditCardRequest.getExpiryDate()));
@@ -43,15 +43,16 @@ public class CreditCardManager implements CreditCardService {
 		if (result != null) {
 			return result;
 		}
-		
+
+		Customer customer = new Customer();
+		customer.setId(createCreditCardRequest.getCustomerId());
+
 		CreditCard creditCard = new CreditCard();
 		creditCard.setExpiryDate(createCreditCardRequest.getExpiryDate());
 		creditCard.setCardName(createCreditCardRequest.getCardName());
 		creditCard.setCardNumber(createCreditCardRequest.getCardNumber());
 		creditCard.setCvc(createCreditCardRequest.getCvc());
-
-		Customer customer = new Customer();
-		customer.setId(createCreditCardRequest.getCustomerId());
+		creditCard.setCustomer(customer);
 
 		this.creditCardDao.save(creditCard);
 
@@ -86,40 +87,37 @@ public class CreditCardManager implements CreditCardService {
 
 	@Override
 	public DataResult<List<CreditCard>> getAll() {
-		this.creditCardDao.findAll();
-
-		return new SuccessDataResult<List<CreditCard>>(Messages.CREDITCARDLIST);
+		return new SuccessDataResult<List<CreditCard>>(this.creditCardDao.findAll(), Messages.CREDITCARDLIST);
 	}
 
 	@Override
 	public DataResult<List<CreditCard>> getCreditCardByCustomer_Id(int customerId) {
 
-		this.creditCardDao.getCreditCardByCustomer_Id(customerId);
-
-		return new SuccessDataResult<List<CreditCard>>(Messages.CREDITCARDLIST);
+		return new SuccessDataResult<List<CreditCard>>(this.creditCardDao.getCreditCardByCustomer_Id(customerId),
+				Messages.CREDITCARDLIST);
 	}
 
 	private Result checkCreditCardNumber(String cardNumber) {
 		String regex = "^(?:(?<visa>4[0-9]{12}(?:[0-9]{3})?)|" + "(?<mastercard>5[1-5][0-9]{14})|"
 				+ "(?<discover>6(?:011|5[0-9]{2})[0-9]{12})|" + "(?<amex>3[47][0-9]{13})|"
 				+ "(?<diners>3(?:0[0-5]|[68][0-9])?[0-9]{11})|" + "(?<jcb>(?:2131|1800|35[0-9]{3})[0-9]{11}))$";
-		
+
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(cardNumber);
-		
-		if(!matcher.matches()) {
+
+		if (!matcher.matches()) {
 			return new ErrorResult(Messages.CREDITCARDNUMBERERROR);
 		}
 		return new SuccessResult();
 	}
-	
+
 	private Result checkCreditCardCvc(String cvc) {
-		String regex = "^[0-9]{3, 4}$";
-		
+		String regex = "^[0-9]{3,4}$";
+
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(cvc);
-		
-		if(!matcher.matches()) {
+
+		if (!matcher.matches()) {
 			return new ErrorResult(Messages.CREDITCARDCVCERROR);
 		}
 		return new SuccessResult();
@@ -136,5 +134,5 @@ public class CreditCardManager implements CreditCardService {
 		}
 		return new SuccessResult();
 	}
-	
+
 }

@@ -34,6 +34,6 @@ public class Color {
 	private String colorName;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "brand")
+	@OneToMany(mappedBy = "color")
 	private List<Car> cars;
 }

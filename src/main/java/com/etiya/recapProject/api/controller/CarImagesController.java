@@ -62,7 +62,7 @@ public class CarImagesController {
 	}
 
 	@PutMapping("/delete")
-	Result update(@Valid @RequestBody DeleteCarImageRequest deleteCarImageRequest) {
+	Result delete(@Valid @RequestBody DeleteCarImageRequest deleteCarImageRequest) {
 
 		return this.carImageService.delete(deleteCarImageRequest);
 	}

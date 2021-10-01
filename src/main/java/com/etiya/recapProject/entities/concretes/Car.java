@@ -47,6 +47,12 @@ public class Car {
 	@Column(name="findex_point")
 	private int findexPoint;
 	
+	@Column(name="city_name")
+	private String cityName;
+	
+	@Column(name="current_kilometer")
+	private int currentKilometer;
+	
 	@ManyToOne
 	@JoinColumn(name="brand_id")
 	private Brand brand; 
@@ -66,4 +72,8 @@ public class Car {
 	@JsonIgnore
 	@OneToMany(mappedBy = "car")
 	private List<CarMaintenance> carMaintenances;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "car")
+	private List<Damage> damages;
 }

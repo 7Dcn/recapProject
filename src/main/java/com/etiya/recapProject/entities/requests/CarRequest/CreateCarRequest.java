@@ -28,6 +28,13 @@ public class CreateCarRequest {
 	@Size(max = 200)
 	private String description;
 	
+	@NotNull
+	private String cityName;
+	
+	@NotNull
+	@Min(0)
+	private int currentKilometer;
+	
 	@Min(0)
 	@Max(1900)
 	@NotNull

@@ -24,4 +24,6 @@ public interface CarDao extends JpaRepository<Car, Integer> {
 	List<Car> findByCarMaintenances_ReturnStatus(boolean returnStatus);
 	
 	List<Car> findByRentals_ReturnStatus(boolean returnStatus);
+	
+	List<Car> findByCityName(String cityName);
 }

@@ -1,4 +1,4 @@
-package com.etiya.recapProject.entities.requests.Payment;
+package com.etiya.recapProject.entities.requests.damageRequest;
 
 import javax.validation.constraints.NotNull;
 
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeletePaymentRequest {
+public class DeleteDamageRequest {
 	
 	@NotNull
 	private int id;

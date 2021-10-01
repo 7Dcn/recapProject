@@ -10,7 +10,7 @@ import com.etiya.recapProject.business.constants.Messages;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.SuccessDataResult;
 import com.etiya.recapProject.dataAccess.abstracts.ApplicationUserDao;
-import com.etiya.recapProject.entities.concretes.ApplicationUser;
+import com.etiya.recapProject.entities.abstracts.ApplicationUser;
 
 @Service
 public class ApplicationUserManager implements ApplicationUserService {
