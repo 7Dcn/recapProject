@@ -68,6 +68,8 @@ public class Messages {
 	public static final String CREDITCARDNUMBERERROR = "Credit card number is invalid.";
 	public static final String CREDITCARDDATEERROR = "Credit card date is invalid.";
 	public static final String CREDITCARDCVCERROR = "Credit card CVC is invalid.";
+	public static final String CREDITCARDSAVE = "Credit card registered.";
+	public static final String CREDITCARDNOTSAVE = "Credit card not registered.";
 
 	public static final String PAYMENTADD = "Payment added.";
 	public static final String PAYMENTUPDATE = "Payment updated.";

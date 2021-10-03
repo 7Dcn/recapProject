@@ -42,9 +42,6 @@ public class CreateRentalRequest {
 	@NotNull
 	private String dropOffLocation;
 	
-	@JsonIgnore
-	private double dailyPrice;
-	
 	@NotNull
 	@Valid
 	private PaymentDto paymentDto;

@@ -14,7 +14,13 @@ import lombok.Setter;
 public class CreatePaymentRequest {
 	
 	@NotNull
-	private int creditCardId;
+	private String cardNumber;
+	
+	@NotNull
+	private String cvc;
+	
+	@NotNull
+	private String expiryDate;
 	
 	@NotNull
 	private double amount;

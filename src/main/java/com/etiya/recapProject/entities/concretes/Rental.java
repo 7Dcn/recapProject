@@ -9,8 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -56,9 +57,6 @@ public class Rental {
 
 	@Column(name = "end_kilometer")
 	private int endKilometer;
-
-	@Column(name = "dailyPrice")
-	private double dailyPrice;
 	
 	@Column(name = "amount")
 	private double amount;
@@ -76,7 +74,10 @@ public class Rental {
 	@JoinColumn(name = "invoice_id")
 	private Invoice invoice;
 	
-	@OneToMany(mappedBy = "rental")
+	@ManyToMany()
+	@JoinTable(name = "rental_additional_services", 
+	joinColumns = @JoinColumn(name = "rental_id"), 
+	inverseJoinColumns = @JoinColumn(name = "additional_service_id"))
 	private List<AdditionalService> additionalServices;
-			
+
 }

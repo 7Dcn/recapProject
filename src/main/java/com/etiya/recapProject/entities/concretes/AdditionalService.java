@@ -1,12 +1,13 @@
 package com.etiya.recapProject.entities.concretes;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,7 +40,6 @@ public class AdditionalService {
 	private String description;
 	
 	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "rental_id")
-	private Rental rental;
+	@ManyToMany(mappedBy = "additionalServices")
+	private List<Rental> rentals;
 }

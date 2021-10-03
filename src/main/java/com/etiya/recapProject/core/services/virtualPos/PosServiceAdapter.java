@@ -8,10 +8,10 @@ import com.etiya.recapProject.business.abstracts.PosCheckService;
 public class PosServiceAdapter implements PosCheckService {
 
 	@Override
-	public boolean checkCreditCardInformation(double amount, String cardNumber) {
+	public boolean checkCreditCardInformation(double amount, String cardNumber, String cvc, String expiryDate) {
 		PosService posService = new PosService();
 
-		return posService.checkCreditCard(amount, cardNumber);
+		return posService.checkCreditCard(amount, cardNumber, cvc, expiryDate);
 
 	}
 

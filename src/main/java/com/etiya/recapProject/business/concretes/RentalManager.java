@@ -2,6 +2,7 @@ package com.etiya.recapProject.business.concretes;
 
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,15 @@ import com.etiya.recapProject.dataAccess.abstracts.AdditionalServiceDao;
 import com.etiya.recapProject.dataAccess.abstracts.CarDao;
 import com.etiya.recapProject.dataAccess.abstracts.CarMaintenanceDao;
 import com.etiya.recapProject.dataAccess.abstracts.CorporateCustomerDao;
+import com.etiya.recapProject.dataAccess.abstracts.CreditCardDao;
+import com.etiya.recapProject.dataAccess.abstracts.CustomerDao;
 import com.etiya.recapProject.dataAccess.abstracts.IndividualCustomerDao;
 import com.etiya.recapProject.dataAccess.abstracts.RentalDao;
 import com.etiya.recapProject.entities.concretes.AdditionalService;
 import com.etiya.recapProject.entities.concretes.Car;
 import com.etiya.recapProject.entities.concretes.CarMaintenance;
 import com.etiya.recapProject.entities.concretes.CorporateCustomer;
+import com.etiya.recapProject.entities.concretes.CreditCard;
 import com.etiya.recapProject.entities.concretes.IndividualCustomer;
 import com.etiya.recapProject.entities.concretes.Rental;
 import com.etiya.recapProject.entities.dtos.AdditionalServiceDto;
@@ -48,11 +52,14 @@ public class RentalManager implements RentalService {
 	private CarMaintenanceDao carMaintenanceDao;
 	private PaymentService paymentService;
 	private AdditionalServiceDao additionalServiceDao;
+	private CreditCardDao creditCardDao;
+	private CustomerDao customerDao;
 
 	@Autowired
 	public RentalManager(RentalDao rentalDao, CustomerFindexPointCheckService userFindexPointCheckService,
 			IndividualCustomerDao individualCustomerDao, CarDao carDao, CorporateCustomerDao corporateCustomerDao,
-			CarMaintenanceDao carMaintenanceDao, PaymentService paymentService, AdditionalServiceDao additionalServiceDao) {
+			CarMaintenanceDao carMaintenanceDao, PaymentService paymentService,
+			AdditionalServiceDao additionalServiceDao, CreditCardDao creditCardDao, CustomerDao customerDao) {
 		super();
 		this.rentalDao = rentalDao;
 		this.userFindexPointCheckService = userFindexPointCheckService;
@@ -62,50 +69,47 @@ public class RentalManager implements RentalService {
 		this.carMaintenanceDao = carMaintenanceDao;
 		this.paymentService = paymentService;
 		this.additionalServiceDao = additionalServiceDao;
+		this.creditCardDao = creditCardDao;
+		this.customerDao = customerDao;
 	}
 
 	@Override
 	public Result addRentalForIndividualCustomer(CreateRentalRequest createRentalRequest) {
 
-		Car car = this.carDao.getById(createRentalRequest.getCarId());
+		double amount = calculateTotalAmountofRental(createRentalRequest.getCarId(), createRentalRequest.getRentDate(),
+				createRentalRequest.getReturnDate(), createRentalRequest.getDropOffLocation(),
+				createRentalRequest.getPickUpLocation(), createRentalRequest.getAdditionalServiceDtos());
 
-		IndividualCustomer individualCustomer = new IndividualCustomer();
-		individualCustomer.setId(createRentalRequest.getCustomerId());
-		
-		List<AdditionalService> additionalServices = new ArrayList<AdditionalService>();
-		
-		for (AdditionalServiceDto additionalServiceDtoItem : createRentalRequest.getAdditionalServiceDtos()) {
-			additionalServices.add(this.additionalServiceDao.findById(additionalServiceDtoItem.getId()).get());
-		}
-		
-		Rental rental = new Rental();
-		rental.setRentDate(createRentalRequest.getRentDate());
-		rental.setPickUpLocation(car.getCityName());
-		rental.setDropOffLocation(createRentalRequest.getDropOffLocation());
-		rental.setStartKilometer(createRentalRequest.getStartKilometer());
-		rental.setDailyPrice(car.getDailyPrice());
-		rental.setCar(car);
-		rental.setCustomer(individualCustomer);
-		rental.setAdditionalServices(additionalServices);
-		rental.setAmount(calculateTotalAmountofRental(createRentalRequest));
-		
 		var result = BusinessRules.run(checkCarIsReturned(createRentalRequest.getCarId()),
 				checkIndiviualCustomerFindexPoint(
 						this.individualCustomerDao.getById(createRentalRequest.getCustomerId()),
 						this.carDao.getById(createRentalRequest.getCarId())),
 				checkIfCarInMaintenance(createRentalRequest.getCarId()),
-				isPaymentDone(createRentalRequest.getPaymentDto(),calculateTotalAmountofRental(createRentalRequest)));
+				isPaymentDone(createRentalRequest.getPaymentDto(), amount, createRentalRequest.getCustomerId()));
 
 		if (result != null) {
 			return result;
 		}
-		
-		for (AdditionalService additionalService : rental.getAdditionalServices()) {
-			System.out.println(additionalService);
-		}
-		
-		
+
+		Car car = this.carDao.getById(createRentalRequest.getCarId());
+
+		IndividualCustomer individualCustomer = this.individualCustomerDao.getById(createRentalRequest.getCustomerId());
+
+		Rental rental = new Rental();
+		rental.setRentDate(createRentalRequest.getRentDate());
+		rental.setPickUpLocation(car.getCityName());
+		rental.setDropOffLocation(createRentalRequest.getDropOffLocation());
+		rental.setStartKilometer(car.getCurrentKilometer());
+		rental.setCar(car);
+		rental.setCustomer(individualCustomer);
+		rental.setAdditionalServices(convertAdditionalServiceFromDto(createRentalRequest.getAdditionalServiceDtos()));
+		rental.setAmount(amount);
+
 		this.rentalDao.save(rental);
+		
+		car.setCityName(createRentalRequest.getDropOffLocation());
+		this.carDao.save(car);
+		
 		return new SuccessResult(Messages.RENTALADD);
 
 	}
@@ -114,72 +118,81 @@ public class RentalManager implements RentalService {
 	public Result updateRentalForIndividualCustomer(UpdateRentalRequest updateRentalRequest) {
 
 		Car car = this.carDao.getById(updateRentalRequest.getCarId());
-		car.setCityName(updateRentalRequest.getDropOffLocation());
-		car.setCurrentKilometer(updateRentalRequest.getEndKilometer());
-		this.carDao.save(car);
 
-		IndividualCustomer individualCustomer = new IndividualCustomer();
-		individualCustomer.setId(updateRentalRequest.getCustomerId());
+		Rental rental = this.rentalDao.getById(updateRentalRequest.getId());
+
+		// update sonrası amount miktarını hesaplarken ilk ödenen kısmı çıkaracak mıyız*
+		double amount = calculateTotalAmountofRental(updateRentalRequest.getCarId(), rental.getRentDate(),
+				updateRentalRequest.getReturnDate(), updateRentalRequest.getDropOffLocation(), car.getCityName(),
+				updateRentalRequest.getAdditionalServiceDtos());
 
 		var result = BusinessRules.run(
 				checkIndiviualCustomerFindexPoint(
 						this.individualCustomerDao.getById(updateRentalRequest.getCustomerId()),
 						this.carDao.getById(updateRentalRequest.getCarId())),
-				checkIfCarInMaintenance(updateRentalRequest.getCarId()));
+				checkIfCarInMaintenance(updateRentalRequest.getCarId()),
+				isPaymentDone(updateRentalRequest.getPaymentDto(), amount, updateRentalRequest.getCustomerId()));
+
 		if (result != null) {
 			return result;
 		}
 
-		Rental rental = this.rentalDao.getById(updateRentalRequest.getId());
-		rental.setRentDate(updateRentalRequest.getRentDate());
+		IndividualCustomer individualCustomer = this.individualCustomerDao.getById(updateRentalRequest.getCustomerId());
+
 		rental.setReturnDate(updateRentalRequest.getReturnDate());
-		rental.setPickUpLocation(updateRentalRequest.getPickUpLocation());
 		rental.setDropOffLocation(updateRentalRequest.getDropOffLocation());
 		rental.setReturnStatus(updateRentalRequest.isRentStatus());
-		rental.setStartKilometer(updateRentalRequest.getStartKilometer());
 		rental.setEndKilometer(updateRentalRequest.getEndKilometer());
-		rental.setDailyPrice(car.getDailyPrice());
+		rental.setAdditionalServices(convertAdditionalServiceFromDto(updateRentalRequest.getAdditionalServiceDtos()));
 		rental.setCar(car);
 		rental.setCustomer(individualCustomer);
-		
-		long totalRentDay = (ChronoUnit.DAYS.between((updateRentalRequest.getRentDate().toInstant()),
-				(updateRentalRequest.getReturnDate().toInstant())));
-		rental.setAmount(totalRentDay * car.getDailyPrice());
 
 		this.rentalDao.save(rental);
+
+		car.setCityName(updateRentalRequest.getDropOffLocation());
+		car.setCurrentKilometer(updateRentalRequest.getEndKilometer());
+		this.carDao.save(car);
+		
 		return new SuccessResult(Messages.RENTALUPDATE);
 	}
 
 	@Override
 	public Result addRentalForCorporateCustomer(CreateRentalRequest createRentalRequest) {
-
-		Car car = this.carDao.getById(createRentalRequest.getCarId());
-
-		CorporateCustomer corporateCustomer = new CorporateCustomer();
-		corporateCustomer.setId(createRentalRequest.getCustomerId());
+		
+		double amount = calculateTotalAmountofRental(createRentalRequest.getCarId(), createRentalRequest.getRentDate(),
+				createRentalRequest.getReturnDate(), createRentalRequest.getDropOffLocation(),
+				createRentalRequest.getPickUpLocation(), createRentalRequest.getAdditionalServiceDtos());
 
 		var result = BusinessRules.run(checkCarIsReturned(createRentalRequest.getCarId()),
 				checkCorporateCustomerFindexPoint(
 						this.corporateCustomerDao.getById(createRentalRequest.getCustomerId()),
 						this.carDao.getById(createRentalRequest.getCarId())),
-				checkIfCarInMaintenance(createRentalRequest.getCarId()));
+				checkIfCarInMaintenance(createRentalRequest.getCarId()),
+				isPaymentDone(createRentalRequest.getPaymentDto(), amount, createRentalRequest.getCustomerId()));
+
 		if (result != null) {
 			return result;
 		}
+		
+		Car car = this.carDao.getById(createRentalRequest.getCarId());
+
+		CorporateCustomer corporateCustomer = this.corporateCustomerDao.getById(createRentalRequest.getCustomerId());
+
 		Rental rental = new Rental();
 		rental.setRentDate(createRentalRequest.getRentDate());
 		rental.setPickUpLocation(car.getCityName());
 		rental.setDropOffLocation(createRentalRequest.getDropOffLocation());
 		rental.setStartKilometer(car.getCurrentKilometer());
-		rental.setDailyPrice(car.getDailyPrice());
 		rental.setCar(car);
 		rental.setCustomer(corporateCustomer);
-		
-		long totalRentDay = (ChronoUnit.DAYS.between((createRentalRequest.getRentDate().toInstant()),
-				(createRentalRequest.getReturnDate().toInstant())));
-		rental.setAmount(totalRentDay * car.getDailyPrice());
+		rental.setAdditionalServices(convertAdditionalServiceFromDto(createRentalRequest.getAdditionalServiceDtos()));
+		rental.setAmount(amount);
 
 		this.rentalDao.save(rental);
+		
+		car.setCityName(createRentalRequest.getDropOffLocation());
+		this.carDao.save(car);
+		
 		return new SuccessResult(Messages.RENTALADD);
 	}
 
@@ -187,39 +200,40 @@ public class RentalManager implements RentalService {
 	public Result updateRentalForCorporateCustomer(UpdateRentalRequest updateRentalRequest) {
 
 		Car car = this.carDao.getById(updateRentalRequest.getCarId());
-		car.setCityName(updateRentalRequest.getDropOffLocation());
-		car.setCurrentKilometer(updateRentalRequest.getEndKilometer());
-		this.carDao.save(car);
+		
+		Rental rental = this.rentalDao.getById(updateRentalRequest.getId());
 
-		CorporateCustomer corporateCustomer = new CorporateCustomer();
-		corporateCustomer.setId(updateRentalRequest.getCustomerId());
+		CorporateCustomer corporateCustomer = this.corporateCustomerDao.getById(updateRentalRequest.getCustomerId());
+
+		double amount = calculateTotalAmountofRental(updateRentalRequest.getCarId(), rental.getRentDate(),
+				updateRentalRequest.getReturnDate(), updateRentalRequest.getDropOffLocation(), car.getCityName(),
+				updateRentalRequest.getAdditionalServiceDtos());
 
 		var result = BusinessRules.run(
 				checkCorporateCustomerFindexPoint(
 						this.corporateCustomerDao.getById(updateRentalRequest.getCustomerId()),
 						this.carDao.getById(updateRentalRequest.getCarId())),
-				checkIfCarInMaintenance(updateRentalRequest.getCarId()));
+				checkIfCarInMaintenance(updateRentalRequest.getCarId()),
+				isPaymentDone(updateRentalRequest.getPaymentDto(), amount, updateRentalRequest.getCustomerId()));
 
 		if (result != null) {
 			return result;
 		}
 
-		Rental rental = this.rentalDao.getById(updateRentalRequest.getId());
-		rental.setRentDate(updateRentalRequest.getRentDate());
 		rental.setReturnDate(updateRentalRequest.getReturnDate());
-		rental.setPickUpLocation(updateRentalRequest.getPickUpLocation());
 		rental.setDropOffLocation(updateRentalRequest.getDropOffLocation());
 		rental.setReturnStatus(updateRentalRequest.isRentStatus());
-		rental.setStartKilometer(updateRentalRequest.getStartKilometer());
 		rental.setEndKilometer(updateRentalRequest.getEndKilometer());
+		rental.setAdditionalServices(convertAdditionalServiceFromDto(updateRentalRequest.getAdditionalServiceDtos()));
 		rental.setCar(car);
 		rental.setCustomer(corporateCustomer);
 
-		long totalRentDay = (ChronoUnit.DAYS.between((updateRentalRequest.getRentDate().toInstant()),
-				(updateRentalRequest.getReturnDate().toInstant())));
-		rental.setAmount(totalRentDay * car.getDailyPrice());
-		
 		this.rentalDao.save(rental);
+
+		car.setCityName(updateRentalRequest.getDropOffLocation());
+		car.setCurrentKilometer(updateRentalRequest.getEndKilometer());
+		this.carDao.save(car);
+		
 		return new SuccessResult(Messages.RENTALUPDATE);
 	}
 
@@ -275,34 +289,64 @@ public class RentalManager implements RentalService {
 		}
 		return new SuccessResult();
 	}
-	
-	private Result isPaymentDone(PaymentDto paymentDto, double amount) {
+
+	private Result isPaymentDone(PaymentDto paymentDto, double amount, int customerId) {
 		CreatePaymentRequest createPaymentRequest = new CreatePaymentRequest();
-		createPaymentRequest.setCreditCardId(paymentDto.getCreditCardId());
+		createPaymentRequest.setCardNumber(paymentDto.getCardNumber());
+		createPaymentRequest.setCvc(paymentDto.getCvc());
+		createPaymentRequest.setExpiryDate(paymentDto.getExpiryDate());
 		createPaymentRequest.setAmount(amount);
-		
-		if(!this.paymentService.add(createPaymentRequest).isSuccess()) {
+
+		if (!this.paymentService.add(createPaymentRequest).isSuccess()) {
 			return new ErrorResult(Messages.PAYMENTCARDFAIL);
 		}
 		
+		if(paymentDto.isSave()) {
+			CreditCard creditCard = new CreditCard();
+			creditCard.setCardNumber(paymentDto.getCardNumber());
+			creditCard.setCvc(paymentDto.getCvc());
+			creditCard.setExpiryDate(paymentDto.getExpiryDate());
+			creditCard.setCustomer(this.customerDao.getById(customerId));
+			creditCardDao.save(creditCard);
+		}
+
 		return new SuccessResult();
 	}
-	
-	private double calculateTotalAmountofRental(CreateRentalRequest createRentalRequest) {
-		
-		Car car= this.carDao.getById(createRentalRequest.getCarId());
-		
-		long totalRentDay = (ChronoUnit.DAYS.between((createRentalRequest.getRentDate().toInstant()),
-				(createRentalRequest.getReturnDate().toInstant())));
-		
+
+	private double calculateTotalAmountofRental(int carId, Date rentDate, Date returnDate, String dropOffLocation,
+			String pickUpLocation, List<AdditionalServiceDto> additionalServiceDtos) {
+
+		Car car = this.carDao.getById(carId);
+
+		long totalRentDay = (ChronoUnit.DAYS.between((rentDate.toInstant()), (returnDate.toInstant())));
+
 		double totalAmount = totalRentDay * car.getDailyPrice();
-		
-		if((createRentalRequest.getDropOffLocation()).equals(createRentalRequest.getPickUpLocation())== false) {
-			totalAmount +=500;
-		
+
+		List<AdditionalService> additionalServices = new ArrayList<AdditionalService>();
+		for (AdditionalServiceDto additionalServiceDtoItem : additionalServiceDtos) {
+			additionalServices.add(this.additionalServiceDao.findById(additionalServiceDtoItem.getId()).get());
 		}
-		
+
+		if (!dropOffLocation.equals(pickUpLocation)) {
+			totalAmount += 500;
+
+		}
+
+		for (AdditionalService additionalServiceItem : additionalServices) {
+			totalAmount += additionalServiceItem.getDailyPrice() * totalRentDay;
+		}
+
 		return totalAmount;
 	}
 	
+	private List<AdditionalService> convertAdditionalServiceFromDto(List<AdditionalServiceDto> additionalServiceDtos){
+		List<AdditionalService> additionalServices = new ArrayList<AdditionalService>();
+		
+		for (AdditionalServiceDto additionalServiceDtoItem : additionalServiceDtos) {
+			additionalServices.add(this.additionalServiceDao.findById(additionalServiceDtoItem.getId()).get());
+		}
+		
+		return additionalServices;
+	}
+
 }

@@ -11,5 +11,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PaymentDto {
 	
-	private int creditCardId;
+	private String cardNumber;
+	
+	private String cvc;
+	
+	private String expiryDate;
+	
+	private boolean isSave;
 }

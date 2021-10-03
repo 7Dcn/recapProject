@@ -2,7 +2,7 @@ package com.etiya.recapProject.core.services.virtualPos;
 
 public class PosService {
 	
-	public boolean checkCreditCard(double amount, String cardNumber) {
+	public boolean checkCreditCard(double amount, String cardNumber, String cvc, String expiryDate) {
 		if(checkLimit(amount) && checkCardNumber(cardNumber)) {
 			return true;
 		}
@@ -10,7 +10,7 @@ public class PosService {
 	}
 	
 	private boolean checkLimit(double amount) {
-		if (amount > 1000) {
+		if (amount > 2000) {
 			return false;
 		}
 		return true;

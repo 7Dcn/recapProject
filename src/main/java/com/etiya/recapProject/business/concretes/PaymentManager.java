@@ -14,9 +14,7 @@ import com.etiya.recapProject.core.utilities.results.ErrorResult;
 import com.etiya.recapProject.core.utilities.results.Result;
 import com.etiya.recapProject.core.utilities.results.SuccessDataResult;
 import com.etiya.recapProject.core.utilities.results.SuccessResult;
-import com.etiya.recapProject.dataAccess.abstracts.CreditCardDao;
 import com.etiya.recapProject.dataAccess.abstracts.PaymentDao;
-import com.etiya.recapProject.entities.concretes.CreditCard;
 import com.etiya.recapProject.entities.concretes.Payment;
 import com.etiya.recapProject.entities.requests.paymentRequest.CreatePaymentRequest;
 
@@ -25,32 +23,29 @@ public class PaymentManager implements PaymentService {
 
 	private PaymentDao paymentDao;
 	private PosCheckService posCheckService;
-	private CreditCardDao creditCardDao;
-	
+
 	@Autowired
-	public PaymentManager(PaymentDao paymentDao, PosCheckService posCheckService,
-			CreditCardDao creditCardDao) {
+	public PaymentManager(PaymentDao paymentDao, PosCheckService posCheckService) {
 		super();
 		this.paymentDao = paymentDao;
 		this.posCheckService = posCheckService;
-		this.creditCardDao = creditCardDao;
 	}
 
 	@Override
 	public Result add(CreatePaymentRequest createPaymentRequest) {
 
-		CreditCard creditCard = this.creditCardDao.getById(createPaymentRequest.getCreditCardId());
-
-		var result = BusinessRules.run(checkCreditCardInformations(createPaymentRequest.getAmount(), creditCard.getCardNumber()));
+		var result = BusinessRules
+				.run(checkCreditCardInformations(createPaymentRequest.getAmount(), createPaymentRequest.getCardNumber(),
+						createPaymentRequest.getCvc(), createPaymentRequest.getExpiryDate()));
 		if (result != null) {
 			return result;
 		}
 
 		Payment payment = new Payment();
-		payment.setCreditCard(creditCard);
 		payment.setAmount(createPaymentRequest.getAmount());
 		
 		this.paymentDao.save(payment);
+
 		return new SuccessResult(Messages.PAYMENTADD);
 	}
 
@@ -59,15 +54,8 @@ public class PaymentManager implements PaymentService {
 		return new SuccessDataResult<List<Payment>>(this.paymentDao.findAll(), Messages.PAYMENTLIST);
 	}
 
-//	private Result cardInformationSave(boolean save) {
-//		if (save == false) {
-//			return new ErrorResult(Messages.PAYMENTCARDNOTSAVE);
-//		}
-//		return new SuccessResult(Messages.PAYMENTCARDSAVE);
-//	}
-
-	private Result checkCreditCardInformations(double amount, String cardNumber) {
-		if (!this.posCheckService.checkCreditCardInformation(amount, cardNumber)) {
+	private Result checkCreditCardInformations(double amount, String cardNumber, String cvc, String expiryDate) {
+		if (!this.posCheckService.checkCreditCardInformation(amount, cardNumber, cvc, expiryDate)) {
 			return new ErrorResult(Messages.PAYMENTCARDFAIL);
 		}
 		return new SuccessResult();
