@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
-import com.etiya.recapProject.entities.concretes.Car;
 import com.etiya.recapProject.entities.dtos.CarDetailDto;
+import com.etiya.recapProject.entities.dtos.CarDto;
 import com.etiya.recapProject.entities.requests.carRequest.CreateCarRequest;
 import com.etiya.recapProject.entities.requests.carRequest.DeleteCarRequest;
 import com.etiya.recapProject.entities.requests.carRequest.UpdateCarRequest;
@@ -17,19 +17,21 @@ public interface CarService {
 
 	Result delete(DeleteCarRequest deleteCarRequest);
 
-	DataResult<List<Car>> getAll();
+	DataResult<List<CarDto>> getAll();
 
-	DataResult<Car> findById(int id);
+	DataResult<CarDto> findById(int id);
 
 	DataResult<List<CarDetailDto>> getCarsWithBrandAndColorDetails();
 	
-	DataResult<List<Car>> getCarsByBrand(int brandId);
+	DataResult<List<CarDto>> getCarsByBrand(int brandId);
 	
-	DataResult<List<Car>> getCarsByColor(int colorId);
+	DataResult<List<CarDto>> getCarsByColor(int colorId);
 	
-	DataResult<Car> getByCarName(String carName);
+	DataResult<CarDto> getByCarName(String name);
 	
-	DataResult<List<Car>> getAvailableCars();
+	DataResult<List<CarDto>> getAvailableCars();
 	
-	DataResult<List<Car>> findCarsByCityName(String cityName);
+	DataResult<List<CarDto>> findCarsByCityName(String cityName);
+	
+	DataResult<List<CarDto>> getAllMappedDto();
 }

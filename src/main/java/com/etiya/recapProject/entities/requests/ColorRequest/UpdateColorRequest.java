@@ -17,5 +17,5 @@ public class UpdateColorRequest {
 	private int id;
 
 	@NotNull
-	private String colorName;
+	private String name;
 }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.etiya.recapProject.business.abstracts.CorporateCustomerService;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
-import com.etiya.recapProject.entities.concretes.CorporateCustomer;
+import com.etiya.recapProject.entities.dtos.CorporateCustomerDto;
 import com.etiya.recapProject.entities.requests.corporateCustomerRequest.CreateCorporateCustomerRequest;
 import com.etiya.recapProject.entities.requests.corporateCustomerRequest.DeleteCorporateCustomerRequest;
 import com.etiya.recapProject.entities.requests.corporateCustomerRequest.UpdateCorporateCustomerRequest;
@@ -47,7 +47,7 @@ public class CorporateCustomersController {
 	}
 
 	@GetMapping("/getall")
-	public DataResult<List<CorporateCustomer>> getAll() {
+	public DataResult<List<CorporateCustomerDto>> getAll() {
 		return this.corporateCustomerService.getAll();
 	}
 }

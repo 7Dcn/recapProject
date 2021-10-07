@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.etiya.recapProject.business.abstracts.PaymentService;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
-import com.etiya.recapProject.entities.concretes.Payment;
+import com.etiya.recapProject.entities.dtos.PaymentDto;
 import com.etiya.recapProject.entities.requests.paymentRequest.CreatePaymentRequest;
 
 @RestController
@@ -35,7 +35,7 @@ public class PaymentsController {
 	}
 	
 	@GetMapping("/getall")
-	public DataResult<List<Payment>> getAll() {
+	public DataResult<List<PaymentDto>> getAll() {
 		return this.paymentService.getAll();
 	}
 

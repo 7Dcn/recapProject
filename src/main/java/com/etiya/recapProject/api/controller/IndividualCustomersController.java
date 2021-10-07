@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.etiya.recapProject.business.abstracts.IndividualCustomerService;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
-import com.etiya.recapProject.entities.concretes.IndividualCustomer;
+import com.etiya.recapProject.entities.dtos.IndividualCustomerDto;
 import com.etiya.recapProject.entities.requests.individualCustomerRequest.CreateIndividualCustomerRequest;
 import com.etiya.recapProject.entities.requests.individualCustomerRequest.DeleteIndividualCustomerRequest;
 import com.etiya.recapProject.entities.requests.individualCustomerRequest.UpdateIndividualCustomerRequest;
@@ -47,7 +47,7 @@ public class IndividualCustomersController {
 	}
 	
 	@GetMapping("/getall")
-	public DataResult<List<IndividualCustomer>> getAll() {
+	public DataResult<List<IndividualCustomerDto>> getAll() {
 		return this.individualCustomerService.getAll();
 	}
 }

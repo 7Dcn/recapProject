@@ -15,18 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.etiya.recapProject.business.abstracts.BrandService;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
-import com.etiya.recapProject.entities.concretes.Brand;
+import com.etiya.recapProject.entities.dtos.BrandDto;
 import com.etiya.recapProject.entities.requests.brandRequest.CreateBrandRequest;
 import com.etiya.recapProject.entities.requests.brandRequest.DeleteBrandRequest;
 import com.etiya.recapProject.entities.requests.brandRequest.UpdateBrandRequest;
 
-
 @RestController
 @RequestMapping("api/brands")
 public class BrandsController {
-	
+
 	private BrandService brandService;
-	
+
 	@Autowired
 	public BrandsController(BrandService brandService) {
 		super();
@@ -37,24 +36,24 @@ public class BrandsController {
 	public Result add(@Valid @RequestBody CreateBrandRequest createBrandRequest) {
 		return this.brandService.add(createBrandRequest);
 	}
-	
+
 	@PostMapping("/update")
-	public Result  update(@Valid @RequestBody UpdateBrandRequest updateBrandRequest) {
+	public Result update(@Valid @RequestBody UpdateBrandRequest updateBrandRequest) {
 		return this.brandService.update(updateBrandRequest);
 	}
-	
+
 	@PutMapping("/delete")
 	public Result delete(@RequestBody DeleteBrandRequest deleteBrandRequest) {
 		return this.brandService.delete(deleteBrandRequest);
 	}
-	
+
 	@GetMapping("/getall")
-	public DataResult<List<Brand>> getAll() {
+	public DataResult<List<BrandDto>> getAll() {
 		return this.brandService.getAll();
 	}
-	
+
 	@GetMapping("/getbyid")
-	public DataResult<Brand> getById(int id) {
+	public DataResult<BrandDto> getById(int id) {
 		return this.brandService.findById(id);
 	}
 }

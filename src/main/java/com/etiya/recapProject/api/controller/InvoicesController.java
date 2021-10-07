@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.etiya.recapProject.business.abstracts.InvoiceService;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
-import com.etiya.recapProject.entities.concretes.Invoice;
+import com.etiya.recapProject.entities.dtos.InvoiceDto;
 import com.etiya.recapProject.entities.requests.invoiceRequest.CreateInvoiceRequest;
 import com.etiya.recapProject.entities.requests.invoiceRequest.DeleteInvoiceRequest;
 import com.etiya.recapProject.entities.requests.invoiceRequest.UpdateInvoiceRequest;
@@ -50,19 +50,19 @@ public class InvoicesController {
 	}
 
 	@GetMapping("/getall")
-	public DataResult<List<Invoice>> getAll() {
+	public DataResult<List<InvoiceDto>> getAll() {
 		return this.invoiceService.getAll();
 	}
 
 	@GetMapping("/getinvoicesbycustomerid")
-	public DataResult<List<Invoice>> getCreditCardByCustomer_Id(int customerId) {
-
+	public DataResult<List<InvoiceDto>> getCreditCardByCustomer_Id(int customerId) {
 		return this.invoiceService.findByCustomerId(customerId);
 	}
+
 	@GetMapping("/findinvoicesbetweentwodate")
-	public DataResult<List<Invoice>> findInvoicesBetweenTwoDate(@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate) {
-		
-	System.out.println(endDate.toString()+startDate.toString());
-		return this.invoiceService.findInvoicesBetweenTwoDate(endDate,startDate);
+	public DataResult<List<InvoiceDto>> findInvoicesBetweenTwoDate(
+			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+			@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate) {
+		return this.invoiceService.findInvoicesBetweenTwoDate(endDate, startDate);
 	}
 }

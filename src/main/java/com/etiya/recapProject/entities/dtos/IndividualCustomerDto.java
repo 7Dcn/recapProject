@@ -9,11 +9,12 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdditionalServiceDto {
+public class IndividualCustomerDto {
+	private String identityNumber;
 
-	private String name;
+	private String firstName;
 
-	private double dailyPrice;
+	private String lastName;
 
-	private String description;
+	private String email;
 }

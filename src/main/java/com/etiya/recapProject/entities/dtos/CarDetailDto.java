@@ -1,19 +1,21 @@
 package com.etiya.recapProject.entities.dtos;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class CarDetailDto {
-	
-	private String carName;
-	
+
+	private String name;
+
 	private String brandName;
-	
+
 	private String colorName;
-	
+
 	private double dailyPrice;
 }

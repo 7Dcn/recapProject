@@ -17,5 +17,5 @@ public class UpdateBrandRequest {
 	private int id;
 	
 	@NotNull
-	private String brandName;
+	private String name;
 }

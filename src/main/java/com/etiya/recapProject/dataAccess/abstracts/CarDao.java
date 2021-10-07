@@ -10,12 +10,12 @@ import com.etiya.recapProject.entities.dtos.CarDetailDto;
 
 public interface CarDao extends JpaRepository<Car, Integer> {
 	@Query("Select new com.etiya.recapProject.entities.dtos.CarDetailDto"
-			+ " (c.carName, b.brandName, co.colorName, c.dailyPrice) " 
+			+ " (c.name, b.name, co.name, c.dailyPrice) " 
 			+ " From Brand b Inner Join b.cars c "
 			+ " Inner Join c.color co")
 	List<CarDetailDto> getCarsWithBrandAndColorDetails();
 	
-	Car getByCarName(String carName);
+	Car getByName(String name);
 
 	List<Car> getByBrand_Id(int brandId);
 	

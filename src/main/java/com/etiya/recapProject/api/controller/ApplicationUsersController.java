@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.etiya.recapProject.business.abstracts.ApplicationUserService;
 import com.etiya.recapProject.core.utilities.results.DataResult;
-import com.etiya.recapProject.entities.abstracts.ApplicationUser;
+import com.etiya.recapProject.entities.dtos.ApplicationUserDto;
 
 @RestController
 @RequestMapping("api/users")
@@ -24,7 +24,7 @@ public class ApplicationUsersController {
 	}
 
 	@GetMapping("/getall")
-	public DataResult<List<ApplicationUser>> getAll() {
+	public DataResult<List<ApplicationUserDto>> getAll() {
 		return this.userService.getAll();
 	}
 }

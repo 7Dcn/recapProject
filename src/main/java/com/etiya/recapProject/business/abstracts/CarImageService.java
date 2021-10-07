@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
-import com.etiya.recapProject.entities.concretes.CarImage;
+import com.etiya.recapProject.entities.dtos.CarImageDto;
 import com.etiya.recapProject.entities.requests.carImageRequest.CreateCarImageRequest;
 import com.etiya.recapProject.entities.requests.carImageRequest.DeleteCarImageRequest;
 import com.etiya.recapProject.entities.requests.carImageRequest.UpdateCarImageRequest;
@@ -17,7 +17,7 @@ public interface CarImageService {
 
 	Result delete(DeleteCarImageRequest deleteCarImageRequest);
 
-	DataResult<List<CarImage>> getAll();
+	DataResult<List<CarImageDto>> getAll();
 
-	DataResult<List<CarImage>> getImagesWithCarId(int id);
+	DataResult<List<CarImageDto>> getImagesWithCarId(int id);
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
-import com.etiya.recapProject.entities.concretes.Rental;
+import com.etiya.recapProject.entities.dtos.RentalDto;
 import com.etiya.recapProject.entities.requests.rentalRequest.CreateRentalRequest;
 import com.etiya.recapProject.entities.requests.rentalRequest.DeleteRentalRequest;
 import com.etiya.recapProject.entities.requests.rentalRequest.UpdateRentalRequest;
@@ -21,5 +21,5 @@ public interface RentalService {
 	
 	Result delete(DeleteRentalRequest deleteRentalRequest);
 	
-	DataResult<List<Rental>> getAll();
+	DataResult<List<RentalDto>> getAll();
 }

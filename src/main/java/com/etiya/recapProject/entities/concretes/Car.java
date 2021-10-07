@@ -32,8 +32,8 @@ public class Car {
 	@Column(name="id")
 	private int id;
 	
-	@Column(name="car_name")
-	private String carName;
+	@Column(name="name")
+	private String name;
 	
 	@Column(name="model_year")
 	private int modelYear;

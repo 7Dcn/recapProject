@@ -1,7 +1,9 @@
 package com.etiya.recapProject.business.concretes;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import com.etiya.recapProject.core.utilities.results.SuccessDataResult;
 import com.etiya.recapProject.core.utilities.results.SuccessResult;
 import com.etiya.recapProject.dataAccess.abstracts.ColorDao;
 import com.etiya.recapProject.entities.concretes.Color;
+import com.etiya.recapProject.entities.dtos.ColorDto;
 import com.etiya.recapProject.entities.requests.colorRequest.CreateColorRequest;
 import com.etiya.recapProject.entities.requests.colorRequest.DeleteColorRequest;
 import com.etiya.recapProject.entities.requests.colorRequest.UpdateColorRequest;
@@ -23,58 +26,66 @@ import com.etiya.recapProject.entities.requests.colorRequest.UpdateColorRequest;
 public class ColorManager implements ColorService {
 
 	private ColorDao colorDao;
-	
+	private ModelMapper modelMapper;
+
 	@Autowired
-	public ColorManager(ColorDao colorDao) {
+	public ColorManager(ColorDao colorDao, ModelMapper modelMapper) {
 		super();
 		this.colorDao = colorDao;
+		this.modelMapper = modelMapper;
 	}
-	
+
 	@Override
 	public Result add(CreateColorRequest createColorRequest) {
-		
-		var result = BusinessRules.run(checkColorName(createColorRequest.getColorName()));
+
+		var result = BusinessRules.run(checkColorName(createColorRequest.getName()));
 		if (result != null) {
 			return result;
 		}
-		
-		Color color = new Color();
-		color.setColorName(createColorRequest.getColorName());
-		
+
+		Color color = modelMapper.map(createColorRequest, Color.class);
+
 		this.colorDao.save(color);
 		return new SuccessResult(Messages.COLORADD);
 	}
 
 	@Override
 	public Result update(UpdateColorRequest updateColorRequest) {
-		Color color = this.colorDao.getById(updateColorRequest.getId());
-		color.setColorName(updateColorRequest.getColorName());
-		
+		Color color = modelMapper.map(updateColorRequest, Color.class);
 		this.colorDao.save(color);
+
 		return new SuccessResult(Messages.COLORUPDATE);
 	}
 
 	@Override
 	public Result delete(DeleteColorRequest deleteColorRequest) {
 		Color color = this.colorDao.getById(deleteColorRequest.getId());
-		
+
 		this.colorDao.delete(color);
 		return new SuccessResult(Messages.COLORDELETE);
 	}
 
 	@Override
-	public DataResult<List<Color>> getAll() {
-		return new SuccessDataResult<List<Color>>(this.colorDao.findAll(), Messages.COLORLIST);
+	public DataResult<List<ColorDto>> getAll() {
+
+		List<Color> colors = this.colorDao.findAll();
+		List<ColorDto> result = colors.stream().map(color -> modelMapper.map(color, ColorDto.class))
+				.collect(Collectors.toList());
+
+		return new SuccessDataResult<List<ColorDto>>(result, Messages.COLORLIST);
 	}
 
 	@Override
-	public DataResult<Color> findById(int id) {
-		return new SuccessDataResult<Color>(this.colorDao.findById(id).get());
-	}
-	
-	public Result checkColorName(String colorName) {
+	public DataResult<ColorDto> findById(int id) {
+		Color color = this.colorDao.findById(id).get();
+		ColorDto colorDto = modelMapper.map(color, ColorDto.class);
 
-		if (this.colorDao.existsColorByColorName(colorName)) {
+		return new SuccessDataResult<ColorDto>(colorDto);
+	}
+
+	public Result checkColorName(String name) {
+
+		if (this.colorDao.existsColorByName(name)) {
 			return new ErrorResult(Messages.COLORNAMEERROR);
 		}
 		return new SuccessResult();

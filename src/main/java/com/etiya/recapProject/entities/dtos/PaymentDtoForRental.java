@@ -9,11 +9,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdditionalServiceDto {
-
-	private String name;
-
-	private double dailyPrice;
-
-	private String description;
+public class PaymentDtoForRental {
+	
+	private String cardNumber;
+	
+	private String cvc;
+	
+	private String expiryDate;
+	
+	private boolean saveCreditCard;
 }

@@ -9,11 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdditionalServiceDto {
+public class ApplicationUserDto {
+	
+	private String email;
 
-	private String name;
-
-	private double dailyPrice;
-
-	private String description;
+	private String password;
 }

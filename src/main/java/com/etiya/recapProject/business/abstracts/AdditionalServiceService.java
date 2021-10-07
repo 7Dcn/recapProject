@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
-import com.etiya.recapProject.entities.concretes.AdditionalService;
+import com.etiya.recapProject.entities.dtos.AdditionalServiceDto;
 import com.etiya.recapProject.entities.requests.additionalServiceRequest.CreateAdditionalServiceRequest;
 import com.etiya.recapProject.entities.requests.additionalServiceRequest.DeleteAdditionalServiceRequest;
 import com.etiya.recapProject.entities.requests.additionalServiceRequest.UpdateAdditionalServiceRequest;
@@ -16,7 +16,9 @@ public interface AdditionalServiceService {
 
 	Result delete(DeleteAdditionalServiceRequest deleteAdditionalServiceRequest);
 
-	DataResult<List<AdditionalService>> getAll();
+	DataResult<List<AdditionalServiceDto>> getAll();
 
-	DataResult<AdditionalService> findById(int id);
+	DataResult<AdditionalServiceDto> findById(int id);
+	
+	DataResult<List<AdditionalServiceDto>> findByRentals_Id(int rentalId);
 }

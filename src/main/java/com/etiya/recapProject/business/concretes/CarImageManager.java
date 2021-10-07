@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,8 +23,8 @@ import com.etiya.recapProject.core.utilities.results.Result;
 import com.etiya.recapProject.core.utilities.results.SuccessDataResult;
 import com.etiya.recapProject.core.utilities.results.SuccessResult;
 import com.etiya.recapProject.dataAccess.abstracts.CarImageDao;
-import com.etiya.recapProject.entities.concretes.Car;
 import com.etiya.recapProject.entities.concretes.CarImage;
+import com.etiya.recapProject.entities.dtos.CarImageDto;
 import com.etiya.recapProject.entities.requests.carImageRequest.CreateCarImageRequest;
 import com.etiya.recapProject.entities.requests.carImageRequest.DeleteCarImageRequest;
 import com.etiya.recapProject.entities.requests.carImageRequest.UpdateCarImageRequest;
@@ -31,11 +33,13 @@ import com.etiya.recapProject.entities.requests.carImageRequest.UpdateCarImageRe
 public class CarImageManager implements CarImageService {
 
 	private CarImageDao carImageDao;
+	private ModelMapper modelMapper;
 
 	@Autowired
-	public CarImageManager(CarImageDao carImageDao) {
+	public CarImageManager(CarImageDao carImageDao, ModelMapper modelMapper) {
 		super();
 		this.carImageDao = carImageDao;
+		this.modelMapper = modelMapper;
 	}
 
 	@Override
@@ -46,25 +50,9 @@ public class CarImageManager implements CarImageService {
 			return result;
 		}
 
-		Car car = new Car();
-		car.setId(createCarImageRequest.getCarId());
-
-		String imagePathGuid = java.util.UUID.randomUUID().toString();
-
-		File imageFile = new File(ImagePath.CARIMAGEPATH + imagePathGuid + "." + createCarImageRequest.getFile()
-				.getContentType().substring(createCarImageRequest.getFile().getContentType().indexOf("/") + 1));
-
-		imageFile.createNewFile();
-		FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
-		fileOutputStream.write(createCarImageRequest.getFile().getBytes());
-		fileOutputStream.close();
-
-		CarImage carImage = new CarImage();
+		CarImage carImage = modelMapper.map(createCarImageRequest, CarImage.class);
 		carImage.setDate(LocalDate.now());
-		carImage.setImagePath(imageFile.toString());
-		carImage.setImageName(createCarImageRequest.getImageName());
-		carImage.setCar(car);
-
+		carImage.setImagePath(generateImage(createCarImageRequest.getFile()).toString());
 		this.carImageDao.save(carImage);
 
 		return new SuccessResult(Messages.CARIMAGEADD);
@@ -77,25 +65,9 @@ public class CarImageManager implements CarImageService {
 			return result;
 		}
 
-		String imagePathGuid = java.util.UUID.randomUUID().toString();
-
-		File imageFile = new File(ImagePath.CARIMAGEPATH + imagePathGuid + "." + updateCarImageRequest.getFile()
-				.getContentType().substring(updateCarImageRequest.getFile().getContentType().indexOf("/") + 1));
-
-		imageFile.createNewFile();
-		FileOutputStream outputImage = new FileOutputStream(imageFile);
-		outputImage.write(updateCarImageRequest.getFile().getBytes());
-		outputImage.close();
-
-		Car car = new Car();
-		car.setId(updateCarImageRequest.getCarId());
-
-		CarImage carImage = this.carImageDao.getById(updateCarImageRequest.getId());
+		CarImage carImage = modelMapper.map(updateCarImageRequest, CarImage.class);
 		carImage.setDate(LocalDate.now());
-		carImage.setImagePath(imageFile.toString());
-		carImage.setImageName(updateCarImageRequest.getImageName());
-		carImage.setCar(car);
-
+		carImage.setImagePath(generateImage(updateCarImageRequest.getFile()).toString());
 		this.carImageDao.save(carImage);
 
 		return new SuccessResult(Messages.CARIMAGEUPDATE);
@@ -110,13 +82,19 @@ public class CarImageManager implements CarImageService {
 	}
 
 	@Override
-	public DataResult<List<CarImage>> getAll() {
-		return new SuccessDataResult<List<CarImage>>(this.carImageDao.findAll(), Messages.CARIMAGELIST);
+	public DataResult<List<CarImageDto>> getAll() {
+		List<CarImage> carImages = this.carImageDao.findAll();
+
+		List<CarImageDto> result = carImages.stream().map(carImage -> modelMapper.map(carImage, CarImageDto.class))
+				.collect(Collectors.toList());
+
+		return new SuccessDataResult<List<CarImageDto>>(result, Messages.CARIMAGELIST);
 	}
 
 	@Override
-	public DataResult<List<CarImage>> getImagesWithCarId(int carId) {
-		return new SuccessDataResult<List<CarImage>>(this.ifCarImageIsNullAddDefault(carId));
+	public DataResult<List<CarImageDto>> getImagesWithCarId(int carId) {
+
+		return new SuccessDataResult<List<CarImageDto>>(this.ifCarImageIsNullAddDefault(carId));
 	}
 
 	private Result checkImagesNumberLimit(int carId, int limit) {
@@ -133,26 +111,6 @@ public class CarImageManager implements CarImageService {
 		return new SuccessResult();
 	}
 
-//	private Result checkImageType(MultipartFile file) throws IOException {
-//		if (!this.checkImageIsNull(file).isSuccess()) {
-//			return new ErrorResult(this.checkImageIsNull(file).getMessage());
-//		}
-//		ImageInputStream imageInputStream = ImageIO.createImageInputStream(file);
-//
-//		Iterator<ImageReader> imageReaders = ImageIO.getImageReaders(imageInputStream);
-//
-//		while (imageReaders.hasNext()) {
-//			ImageReader reader = (ImageReader) imageReaders.next();
-//			System.out.printf("formatName: %s%n", reader.getFormatName());
-//			if (reader.getFormatName() != "jpg" || reader.getFormatName() != "jpeg"
-//					|| reader.getFormatName() != "png") {
-//				return new ErrorResult(Messages.CARIMAGETYPEERROR);
-//			}
-//
-//		}
-//		return new SuccessResult();
-//	}
-
 	private Result checkImageType(MultipartFile file) {
 		if (this.checkImageIsNull(file).isSuccess() == false) {
 			return new ErrorResult(this.checkImageIsNull(file).getMessage());
@@ -165,24 +123,40 @@ public class CarImageManager implements CarImageService {
 		return new SuccessResult();
 
 	}
-	
-	private List<CarImage> ifCarImageIsNullAddDefault(int carId) {
+
+	private List<CarImageDto> ifCarImageIsNullAddDefault(int carId) {
 		if (this.carImageDao.getByCar_Id(carId).isEmpty()) {
 
-			Car car = new Car();
-			car.setId(carId);
+			CarImageDto carImageDto = new CarImageDto();
+			carImageDto.setImagePath(ImagePath.CARDEFAULTIMAGEPATH);
 
-			CarImage carImage=new CarImage();
-			carImage.setCar(car);
-			carImage.setImagePath(ImagePath.CARDEFAULTIMAGEPATH);
-	
-			List<CarImage> carImages=new ArrayList<CarImage>();
-			carImages.add(carImage);
-			
+			List<CarImageDto> carImages = new ArrayList<CarImageDto>();
+			carImages.add(carImageDto);
+
 			return carImages;
-		    
+
 		}
-		return new ArrayList<CarImage>(this.carImageDao.getByCar_Id(carId));
+		List<CarImage> carImages = this.carImageDao.findAll();
+
+		List<CarImageDto> result = carImages.stream().map(carImage -> modelMapper.map(carImage, CarImageDto.class))
+				.collect(Collectors.toList());
+
+		return new ArrayList<CarImageDto>(result);
+	}
+
+	private File generateImage(MultipartFile file) throws IOException {
+
+		String imagePathGuid = java.util.UUID.randomUUID().toString();
+
+		File imageFile = new File(ImagePath.CARIMAGEPATH + imagePathGuid + "."
+				+ file.getContentType().substring(file.getContentType().indexOf("/") + 1));
+
+		imageFile.createNewFile();
+		FileOutputStream outputImage = new FileOutputStream(imageFile);
+		outputImage.write(file.getBytes());
+		outputImage.close();
+
+		return imageFile;
 	}
 
 }

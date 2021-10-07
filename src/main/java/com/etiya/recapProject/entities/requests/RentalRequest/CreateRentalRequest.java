@@ -6,8 +6,8 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import com.etiya.recapProject.entities.dtos.AdditionalServiceDto;
-import com.etiya.recapProject.entities.dtos.PaymentDto;
+import com.etiya.recapProject.entities.dtos.AdditionalServiceIForRentalDto;
+import com.etiya.recapProject.entities.dtos.PaymentDtoForRental;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
@@ -21,6 +21,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CreateRentalRequest {
 
+	@JsonIgnore
+	private int id;
+	
 	@NotNull
 	private Date rentDate;
 	
@@ -44,7 +47,7 @@ public class CreateRentalRequest {
 	
 	@NotNull
 	@Valid
-	private PaymentDto paymentDto;
+	private PaymentDtoForRental paymentDto;
 	
-	private List<AdditionalServiceDto> additionalServiceDtos;
+	private List<AdditionalServiceIForRentalDto> additionalServiceDtos;
 }

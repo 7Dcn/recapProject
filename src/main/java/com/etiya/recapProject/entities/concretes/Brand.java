@@ -30,8 +30,8 @@ public class Brand {
 	@Column(name = "id")
 	private int id;
 
-	@Column(name = "brand_name")
-	private String brandName;
+	@Column(name = "name")
+	private String name;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "brand")

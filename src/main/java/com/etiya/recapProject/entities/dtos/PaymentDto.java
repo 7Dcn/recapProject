@@ -10,12 +10,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PaymentDto {
-	
+
+	private double amount;
+
 	private String cardNumber;
-	
-	private String cvc;
-	
-	private String expiryDate;
-	
-	private boolean isSave;
+
+	private String customerName;
 }

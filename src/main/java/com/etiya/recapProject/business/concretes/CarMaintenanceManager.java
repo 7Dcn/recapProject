@@ -2,6 +2,7 @@ package com.etiya.recapProject.business.concretes;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,6 @@ import com.etiya.recapProject.core.utilities.results.SuccessDataResult;
 import com.etiya.recapProject.core.utilities.results.SuccessResult;
 import com.etiya.recapProject.dataAccess.abstracts.CarMaintenanceDao;
 import com.etiya.recapProject.dataAccess.abstracts.RentalDao;
-import com.etiya.recapProject.entities.concretes.Car;
 import com.etiya.recapProject.entities.concretes.CarMaintenance;
 import com.etiya.recapProject.entities.concretes.Rental;
 import com.etiya.recapProject.entities.requests.carMaintenanceRequest.CreateCarMaintenanceRequest;
@@ -27,12 +27,14 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 
 	private CarMaintenanceDao carMaintenanceDao;
 	private RentalDao rentalDao;
+	private ModelMapper modelMapper;
 
 	@Autowired
-	public CarMaintenanceManager(CarMaintenanceDao carMaintenanceDao, RentalDao rentalDao) {
+	public CarMaintenanceManager(CarMaintenanceDao carMaintenanceDao, RentalDao rentalDao, ModelMapper modelMapper) {
 		super();
 		this.carMaintenanceDao = carMaintenanceDao;
 		this.rentalDao = rentalDao;
+		this.modelMapper = modelMapper;
 	}
 
 	@Override
@@ -44,14 +46,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 			return result;
 		}
 
-		Car car = new Car();
-		car.setId(createCarMaintenanceRequest.getCarId());
-
-		CarMaintenance carMaintenance = new CarMaintenance();
-		carMaintenance.setMaintenanceDate(createCarMaintenanceRequest.getMaintenanceDate());
-		carMaintenance.setDescription(createCarMaintenanceRequest.getDescription());
-		carMaintenance.setCar(car);
-
+		CarMaintenance carMaintenance = modelMapper.map(createCarMaintenanceRequest, CarMaintenance.class);
 		this.carMaintenanceDao.save(carMaintenance);
 
 		return new SuccessResult(Messages.CARMAINTENANCEADD);
@@ -60,16 +55,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 
 	@Override
 	public Result update(UpdateCarMaintenanceRequest updateCarMaintenanceRequest) {
-		Car car = new Car();
-		car.setId(updateCarMaintenanceRequest.getCarId());
-
-		CarMaintenance carMaintenance = this.carMaintenanceDao.getById(updateCarMaintenanceRequest.getId());
-		carMaintenance.setMaintenanceDate(updateCarMaintenanceRequest.getMaintenanceDate());
-		carMaintenance.setDescription(updateCarMaintenanceRequest.getDescription());
-		carMaintenance.setReturnDate(updateCarMaintenanceRequest.getReturnDate());
-		carMaintenance.setReturnStatus(updateCarMaintenanceRequest.isReturnStatus());
-		carMaintenance.setCar(car);
-
+		CarMaintenance carMaintenance = modelMapper.map(updateCarMaintenanceRequest, CarMaintenance.class);
 		this.carMaintenanceDao.save(carMaintenance);
 
 		return new SuccessResult(Messages.CARMAINTENANCEUPDATE);

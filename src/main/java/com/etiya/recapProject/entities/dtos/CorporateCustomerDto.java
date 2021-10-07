@@ -9,11 +9,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdditionalServiceDto {
+public class CorporateCustomerDto {
 
-	private String name;
+	private String taxNumber;
 
-	private double dailyPrice;
-
-	private String description;
+	private String companyName;
+	
+	private String email;
 }

@@ -1,6 +1,4 @@
-package com.etiya.recapProject.entities.requests.brandRequest;
-
-import javax.validation.constraints.NotNull;
+package com.etiya.recapProject.entities.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,9 +9,12 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateBrandRequest {
-	
-	@NotNull
+public class CarDto {
 	private String name;
-	
+
+	private String brandName;
+
+	private String colorName;
+
+	private double dailyPrice;
 }

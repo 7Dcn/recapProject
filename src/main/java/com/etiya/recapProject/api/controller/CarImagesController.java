@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.etiya.recapProject.business.abstracts.CarImageService;
 import com.etiya.recapProject.core.utilities.results.DataResult;
 import com.etiya.recapProject.core.utilities.results.Result;
-import com.etiya.recapProject.entities.concretes.CarImage;
+import com.etiya.recapProject.entities.dtos.CarImageDto;
 import com.etiya.recapProject.entities.requests.carImageRequest.CreateCarImageRequest;
 import com.etiya.recapProject.entities.requests.carImageRequest.DeleteCarImageRequest;
 import com.etiya.recapProject.entities.requests.carImageRequest.UpdateCarImageRequest;
@@ -68,12 +68,12 @@ public class CarImagesController {
 	}
 
 	@GetMapping("/getall")
-	DataResult<List<CarImage>> getAll() {
+	DataResult<List<CarImageDto>> getAll() {
 		return this.carImageService.getAll();
 	}
 
 	@GetMapping("/getImagesWithCarId")
-	public DataResult<List<CarImage>> getImagesWithCarId(int carId) {
+	public DataResult<List<CarImageDto>> getImagesWithCarId(int carId) {
 
 		return this.carImageService.getImagesWithCarId(carId);
 	}

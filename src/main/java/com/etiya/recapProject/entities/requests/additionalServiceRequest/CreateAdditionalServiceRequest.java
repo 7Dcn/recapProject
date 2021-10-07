@@ -12,15 +12,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateAdditionalServiceRequest {
-	
+
 	@NotNull
 	private String name;
-	
+
 	@NotNull
 	private double dailyPrice;
-	
+
 	@NotNull
 	private String description;
-	
-	
+
 }

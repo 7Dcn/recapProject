@@ -1,4 +1,4 @@
-package com.etiya.recapProject.entities.requests.brandRequest;
+package com.etiya.recapProject.entities.dtos;
 
 import javax.validation.constraints.NotNull;
 
@@ -11,9 +11,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateBrandRequest {
+public class AdditionalServiceIForRentalDto {
 	
 	@NotNull
-	private String name;
+	private int id;
 	
 }

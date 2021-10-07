@@ -1,5 +1,7 @@
 package com.etiya.recapProject.entities.dtos;
 
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,11 +11,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdditionalServiceDto {
+public class CarImageDto {
+	
+	private String imageName;
 
-	private String name;
+	private String imagePath;
 
-	private double dailyPrice;
+	private LocalDate date;
 
-	private String description;
+	private String carName;
 }

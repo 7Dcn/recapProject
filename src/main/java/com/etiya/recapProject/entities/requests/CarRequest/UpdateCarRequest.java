@@ -20,7 +20,7 @@ public class UpdateCarRequest {
 	private int id;
 	
 	@NotNull
-	private String carName;
+	private String name;
 
 	@Min(1900)
 	private int modelYear;

@@ -3,6 +3,7 @@ package com.etiya.recapProject;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -46,5 +47,11 @@ public class RecapProjectApplication {
 		ErrorDataResult<Object> errors = new ErrorDataResult<Object>(validationErrors, "Doğrulama hataları");
 		return errors;
 	}
+	
+	@Bean
+	public ModelMapper modelMapper() {
+	    return new ModelMapper();
+	}
+	
 
 }

@@ -30,8 +30,8 @@ public class Color {
 	@Column(name = "id")
 	private int id;
 	
-	@Column(name = "color_name")
-	private String colorName;
+	@Column(name = "name")
+	private String name;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "color")
